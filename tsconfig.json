@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@lib/*": ["./src/@/lib/*"],
+      "@ui/*": ["./src/@/ui/*"],
+      "@forms/*": ["./src/components/forms/*"],
+      "@/components/*": ["./src/components/*"],
+      "@layout/*": ["./src/layout/*"],
+      "@images/*": ["./src/images/*"],
+      "@config/*": ["./src/config/*"],
+      "@markdown/*": ["./src/markdown/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@schemas/*": ["./src/@/schemas/*"],
+      "@services/*": ["./src/@/services/*"],
+      "@type/*": ["./src/types/*"],
+      "@context/*": ["./src/context/*"],
+      "@actions/*": ["./src/@/actions/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@emails/*": ["./src/emails/*"],
+      "@config/*": ["./src/emails/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

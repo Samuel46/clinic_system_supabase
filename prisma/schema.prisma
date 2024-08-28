@@ -1,0 +1,613 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Permission {
+  action PermissionAction @unique
+  id     String           @id @default(uuid()) @db.Uuid
+  roles  RolePermission[]
+}
+
+model Role {
+  name        String           @unique
+  description String
+  id          String           @id @default(uuid()) @db.Uuid
+  Invitation  Invitation[]
+  permissions RolePermission[]
+  users       User[]
+}
+
+model RolePermission {
+  id           String     @id @default(uuid()) @db.Uuid
+  roleId       String     @db.Uuid
+  permissionId String     @db.Uuid
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+}
+
+model Tenant {
+  name           String
+  address        String
+  contactEmail   String           @unique
+  contactPhone   String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  id             String           @id @default(uuid()) @db.Uuid
+  appointments   Appointment[]
+  billings       Billing[]
+  configurations Configuration[]
+  customers      Customer[]
+  Inventory      Inventory[]
+  invitations    Invitation[]
+  medicalCheckup MedicalCheckup[]
+  medicalRecords MedicalRecord[]
+  medication     Medication[]
+  patients       Patient[]
+  prescription   Prescription[]
+  sales          Sale[]
+  treatment      Treatment[]
+  users          User[]
+}
+
+model Invitation {
+  email     String           @unique
+  token     String           @unique
+  expiresAt DateTime
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  id        String           @id @default(uuid()) @db.Uuid
+  tenantId  String           @db.Uuid
+  roleId    String           @db.Uuid
+  status    InvitationStatus @default(PENDING)
+  role      Role             @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  tenant    Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  name             String
+  email            String           @unique
+  hashedPassword   String?
+  emailVerified    DateTime?
+  phone            String?
+  image            String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  id               String           @id @default(uuid()) @db.Uuid
+  tenantId         String           @db.Uuid
+  roleId           String           @db.Uuid
+  accounts         Account[]
+  appointments     Appointment[]
+  Billing          Billing[]
+  MedicalCheckup   MedicalCheckup[]
+  medicalRecords   MedicalRecord[]
+  Prescription     Prescription[]
+  Sales            Sale[]
+  sessions         Session[]
+  Treatment        Treatment[]
+  role             Role             @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  tenant           Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, email], map: "tenant_email_unique")
+}
+
+model Session {
+  sessionToken String   @unique
+  expires      DateTime
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @db.Uuid
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  id                 String    @id @default(uuid()) @db.Uuid
+  userId             String    @db.Uuid
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  id         String   @id @default(uuid()) @db.Uuid
+}
+
+model Patient {
+  name           String
+  email          String           
+  phone          String
+  address        String
+  dateOfBirth    DateTime?
+  medicalHistory String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  id             String           @id @default(uuid()) @db.Uuid
+  tenantId       String           @db.Uuid
+  appointments   Appointment[]
+  billings       Billing[]
+  medicalCheckup MedicalCheckup[]
+  medicalRecords MedicalRecord[]
+  tenant         Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  prescription   Prescription[]
+  treatment      Treatment[]
+
+ @@unique([tenantId, email], name: "tenantId_email_unique")
+}
+
+model Appointment {
+  date           DateTime
+  startTime      DateTime
+  endTime        DateTime
+  reason         String
+  status         AppointmentStatus
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  id             String            @id @default(uuid()) @db.Uuid
+  tenantId       String            @db.Uuid
+  patientId      String            @db.Uuid
+  doctorId       String            @db.Uuid
+  doctor         User              @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patient        Patient           @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  tenant         Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  medicalCheckup MedicalCheckup?
+  medicalRecord  MedicalRecord?
+  treatment      Treatment?
+
+  @@index([tenantId, date, doctorId], map: "tenant_doctor_date_index")
+}
+
+model MedicalRecord {
+  visitDate      DateTime        @default(now())
+  reasonForVisit String
+  followUp       FollowUpPeriod
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  id             String          @id @default(uuid()) @db.Uuid
+  tenantId       String          @db.Uuid
+  patientId      String          @db.Uuid
+  appointmentId  String?         @unique @db.Uuid
+  checkupId      String?         @unique @db.Uuid
+  treatmentId    String?         @unique @db.Uuid
+  doctorId       String          @db.Uuid
+  appointment    Appointment?    @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  checkups       MedicalCheckup? @relation(fields: [checkupId], references: [id], onDelete: Cascade)
+  doctor         User            @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patient        Patient         @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  tenant         Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  treatments     Treatment?      @relation(fields: [treatmentId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, visitDate, doctorId], map: "tenant_doctor_visit_date_index")
+}
+
+model Billing {
+  amount        Float
+  status        BillingStatus
+  paymentMethod PaymentMethod
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  id            String        @id @default(uuid()) @db.Uuid
+  tenantId      String        @db.Uuid
+  patientId     String        @db.Uuid
+  treatmentId   String?       @db.Uuid
+  userId        String        @db.Uuid
+  patient       Patient       @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  tenant        Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  treatment     Treatment?    @relation(fields: [treatmentId], references: [id])
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, patientId, treatmentId], map: "tenant_patient_treatment_index")
+}
+
+model Medication {
+  name          String
+  description   String?
+  price         Float
+  unit          MedicationUnit
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  id            String         @id @default(uuid()) @db.Uuid
+  tenantId      String         @db.Uuid
+  inventories   Inventory?
+  tenant        Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  prescriptions Prescription[]
+  saleItems     SaleItem[]
+}
+
+model MedicalCheckup {
+  checkupDate      DateTime       @default(now())
+  bloodPressure    String
+  heartRate        Int
+  respiratoryRate  Int?
+  temperature      Float?
+  oxygenSaturation Int?
+  weight           Float?
+  height           Float?
+  bmi              Float?
+  notes            String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  id               String         @id @default(uuid()) @db.Uuid
+  tenantId         String         @db.Uuid
+  patientId        String         @db.Uuid
+  doctorId         String         @db.Uuid
+  appointmentId    String?        @unique @db.Uuid
+  medicalRecordId  String?        @unique @db.Uuid
+  appointment      Appointment?   @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  doctor           User           @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patient          Patient        @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  tenant           Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  medicalRecord    MedicalRecord?
+
+  @@index([tenantId, checkupDate, doctorId], map: "tenant_doctor_checkup_date_index")
+}
+
+model Treatment {
+  treatmentDate   DateTime       @default(now())
+  type            TreatmentType
+  description     String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  id              String         @id @default(uuid()) @db.Uuid
+  tenantId        String         @db.Uuid
+  patientId       String         @db.Uuid
+  doctorId        String         @db.Uuid
+  appointmentId   String?        @unique @db.Uuid
+  medicalRecordId String?        @db.Uuid
+  Billing         Billing[]
+  medicalRecord   MedicalRecord?
+  Prescription    Prescription[]
+  appointment     Appointment?   @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  doctor          User           @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patient         Patient        @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  tenant          Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, treatmentDate, doctorId], map: "tenant_doctor_treatment_date_index")
+}
+
+model Inventory {
+  quantity       Int
+  threshold      Int
+  expirationDate DateTime?
+  location       InventoryLocation? @default(SHELF)
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  id             String             @id @default(uuid()) @db.Uuid
+  medicationId   String             @unique @db.Uuid
+  tenantId       String             @db.Uuid
+  medication     Medication         @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+  tenant         Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  logs           InventoryLog[]
+
+  @@index([tenantId, medicationId], map: "tenant_medication_index")
+}
+
+model InventoryLog {
+  changeType     ChangeType
+  quantityChange Int
+  reason         String?
+  timestamp      DateTime   @default(now())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @default(now()) @updatedAt
+  id             String     @id @default(uuid()) @db.Uuid
+  inventoryId    String     @db.Uuid
+  inventory      Inventory  @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+}
+
+model Prescription {
+  dosage       Dosage
+  frequency    Frequency
+  duration     Duration
+  instructions String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now()) @updatedAt
+  id           String     @id @default(uuid()) @db.Uuid
+  tenantId     String     @db.Uuid
+  patientId    String     @db.Uuid
+  doctorId     String     @db.Uuid
+  treatmentId  String?    @db.Uuid
+  medicationId String     @db.Uuid
+  doctor       User       @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  medication   Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+  patient      Patient    @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  tenant       Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  treatment    Treatment? @relation(fields: [treatmentId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, patientId, doctorId, medicationId], map: "tenant_patient_doctor_medication_index")
+}
+
+model Sale {
+  totalAmount   Float
+  paymentMethod PaymentMethod
+  paymentStatus PaymentStatus @default(PENDING)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now())
+  id            String        @id @default(uuid()) @db.Uuid
+  tenantId      String        @db.Uuid
+  userId        String        @db.Uuid
+  customerId    String?       @db.Uuid
+  receipt       Receipt?
+  customer      Customer?     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  tenant        Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items         SaleItem[]
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([customerId])
+}
+
+model SaleItem {
+  quantity     Int
+  price        Float
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())
+  id           String     @id @default(uuid()) @db.Uuid
+  saleId       String     @db.Uuid
+  medicationId String     @db.Uuid
+  medication   Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+  sale         Sale       @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  @@index([saleId])
+  @@index([medicationId])
+}
+
+model Receipt {
+  content   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  id        String   @id @default(uuid()) @db.Uuid
+  saleId    String   @unique @db.Uuid
+  sale      Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+}
+
+model Customer {
+  name      String
+  email     String?  @unique
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @db.Uuid
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  sales     Sale[]
+
+  @@index([tenantId])
+}
+
+model Configuration {
+  key       String
+  value     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @db.Uuid
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, key], map: "tenant_key_unique")
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+enum PermissionAction {
+  ACCESS_ADMIN_DASHBOARD
+  MANAGE_TENANTS
+  MANAGE_ROLES
+  MANAGE_PERMISSIONS
+  VIEW_AUDIT_LOGS
+  MANAGE_BILLING
+  VIEW_ALL_DATA
+  MANAGE_SUBSCRIPTIONS
+  MANAGE_STAFF
+  VIEW_STAFF
+  ASSIGN_ROLES
+  VIEW_PATIENT_RECORDS
+  EDIT_PATIENT_RECORDS
+  CREATE_PATIENT_RECORDS
+  DELETE_PATIENT_RECORDS
+  VIEW_PATIENT_HISTORY
+  MANAGE_PATIENT_CONSENTS
+  SCHEDULE_APPOINTMENTS
+  VIEW_APPOINTMENTS
+  EDIT_APPOINTMENTS
+  CANCEL_APPOINTMENTS
+  VIEW_APPOINTMENT_HISTORY
+  CREATE_TREATMENT_PLANS
+  VIEW_TREATMENT_PLANS
+  EDIT_TREATMENT_PLANS
+  DELETE_TREATMENT_PLANS
+  PRESCRIBE_MEDICATION
+  ADMINISTER_TREATMENTS
+  SEND_MESSAGES
+  VIEW_MESSAGES
+  MANAGE_NOTIFICATIONS
+  VIEW_INVENTORY
+  MANAGE_INVENTORY
+  ORDER_SUPPLIES
+  VIEW_SUPPLY_ORDERS
+  VIEW_FINANCIAL_RECORDS
+  MANAGE_EXPENSES
+  VIEW_INSURANCE_CLAIMS
+  MANAGE_INSURANCE_CLAIMS
+  VIEW_REPORTS
+  GENERATE_REPORTS
+  EXPORT_DATA
+  MANAGE_USER_ACCOUNTS
+  RESET_USER_PASSWORDS
+  DEACTIVATE_USER_ACCOUNTS
+  VIEW_SALES
+  CREATE_SALES
+  EDIT_SALES
+  DELETE_SALES
+  VIEW_MEDICATIONS
+  CREATE_MEDICATIONS
+  EDIT_MEDICATIONS
+  DELETE_MEDICATIONS
+  VIEW_INVENTORY_CHANGES
+  MANAGE_INVENTORY_CHANGES
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+enum FollowUpPeriod {
+  NO_FOLLOW_UP
+  ONE_DAY
+  THREE_DAYS
+  ONE_WEEK
+  TWO_WEEKS
+  THREE_WEEKS
+  ONE_MONTH
+  SIX_WEEKS
+  TWO_MONTHS
+  THREE_MONTHS
+  SIX_MONTHS
+  NINE_MONTHS
+  ONE_YEAR
+  TWO_YEARS
+  THREE_YEARS
+}
+
+enum PaymentMethod {
+  MPESA
+  CASH
+  CREDIT_CARD
+  INSURANCE
+  OTHER
+}
+
+enum BillingStatus {
+  UNPAID
+  PAID
+  PENDING
+}
+
+enum MedicationUnit {
+  PILLS
+  TABLETS
+  CAPSULES
+  BOTTLES
+  VIALS
+  AMPOULES
+  BOXES
+  SACHETS
+  SPRAY
+  BLISTERS
+  MILLILITERS
+  GRAMS
+  MICROGRAMS
+  LITERS
+  TEASPOONS
+  TABLESPOONS
+  OZ
+  IU
+  PUFFS
+  PACKS
+  TUBES
+  PATCHES
+  KITS
+}
+
+enum TreatmentType {
+  MEDICATION
+  THERAPY
+  SURGERY
+  OTHER
+}
+
+enum InventoryLocation {
+  WAREHOUSE
+  FRONT_STORE
+  DISPENSARY
+  COLD_STORAGE
+  REFRIGERATOR
+  SHELF
+  COUNTER
+}
+
+enum ChangeType {
+  ADDITION
+  SUBTRACTION
+  ADJUSTMENT
+}
+
+enum Dosage {
+  ONE_TABLET
+  TWO_TABLETS
+  HALF_TABLET
+  ONE_QUARTER_TABLET
+  THREE_TABLETS
+  FOUR_TABLETS
+  ONE_CAPSULE
+  TWO_CAPSULES
+  HALF_CAPSULE
+  ONE_QUARTER_CAPSULE
+  THREE_CAPSULES
+  FOUR_CAPSULES
+  ONE_SPOON
+  TWO_SPOONS
+  HALF_SPOON
+  ONE_QUARTER_SPOON
+}
+
+enum Frequency {
+  ONCE_A_DAY
+  TWICE_A_DAY
+  THRICE_A_DAY
+  EVERY_FOUR_HOURS
+  EVERY_SIX_HOURS
+  EVERY_EIGHT_HOURS
+  EVERY_TWELVE_HOURS
+  EVERY_OTHER_DAY
+  ONCE_A_WEEK
+  TWICE_A_WEEK
+  THRICE_A_WEEK
+  ONCE_A_MONTH
+}
+
+enum Duration {
+  ONE_DAY
+  TWO_DAYS
+  THREE_DAYS
+  FIVE_DAYS
+  ONE_WEEK
+  TWO_WEEKS
+  THREE_WEEKS
+  ONE_MONTH
+  THREE_MONTHS
+  SIX_MONTHS
+  NINE_MONTHS
+  ONE_YEAR
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
