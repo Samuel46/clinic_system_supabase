@@ -15,7 +15,7 @@ import { Icons } from "@ui/icons";
 import { ForgotPasswordInput, forgotPasswordSchema } from "@schemas/auth.schemas";
 import { Button } from "@ui/button";
 import { forgotPasswordAction } from "@actions/users.action";
-import Alert from "@ui/alert";
+import Notification from "@ui/notification";
 
 export default function AuthForgotForm() {
   const router = useRouter();
@@ -62,8 +62,8 @@ export default function AuthForgotForm() {
   };
   return (
     <>
-      {msg && <Alert message={msg} type="success" />}
-      {msgError && <Alert message={msgError} type="error" />}
+      {msg && <Notification message={msg} type="success" />}
+      {msgError && <Notification message={msgError} type="error" />}
 
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-4">

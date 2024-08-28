@@ -17,7 +17,7 @@ import { Icons } from "@ui/icons";
 import { ResetPasswordInput, resetPasswordSchema } from "@schemas/auth.schemas";
 import { Button } from "@ui/button";
 import { resetPasswordAction } from "@actions/users.action";
-import Alert from "@ui/alert";
+import Notification from "@ui/notification";
 
 type Props = {
   token: string;
@@ -97,8 +97,8 @@ export default function AuthRestForm({ token, email }: Props) {
   };
   return (
     <>
-      {msg && <Alert message={msg} type="success" />}
-      {msgError && <Alert message={msgError} type="error" />}
+      {msg && <Notification message={msg} type="success" />}
+      {msgError && <Notification message={msgError} type="error" />}
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-4">
           <div className="grid gap-2">
