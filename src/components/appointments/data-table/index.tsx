@@ -136,40 +136,47 @@ export default function AppointmentList<TData, TValue>({
   ) {
     switch (eventType) {
       case "INSERT":
-        toast.success(
-          `New appointment added by ${user?.name} for ${appointment.patient} at ${fDate(
-            appointment?.createdAt ?? new Date()
-          )}`,
-          {
-            position: "top-right",
-          }
-        );
+        if ((payload.new as Appointment).doctorId !== user?.id) {
+          toast.success(
+            `New appointment added by ${user?.name} for ${appointment.patient} at ${fDate(
+              appointment?.createdAt ?? new Date()
+            )}`,
+            {
+              position: "top-right",
+            }
+          );
+        }
+
         // Add new appointment to the top of the list
         setAppointments((prevAppointments) => [appointment, ...prevAppointments]);
         break;
       case "UPDATE":
-        toast.info(
-          `Appointment for ${appointment.patient} by ${appointment.doctor} at ${fDateTime(
-            appointment.updatedAt
-          )}.`,
-          {
-            // action: <Button>Approve</Button>,
-            position: "top-right",
-          }
-        );
+        if ((payload.new as Appointment).doctorId !== user?.id) {
+          toast.info(
+            `Appointment for ${appointment.patient} by ${
+              appointment.doctor
+            } at ${fDateTime(appointment.updatedAt)}.`,
+            {
+              // action: <Button>Approve</Button>,
+              position: "top-right",
+            }
+          );
+        }
         // Update the appointment in the list
         setAppointments((prevAppointments) =>
           prevAppointments.map((a) => (a.id === appointment.id ? appointment : a))
         );
         break;
       case "DELETE":
-        toast.error(
-          `Appointment deleted successfully at ${fDateTime(payload.commit_timestamp)}`,
-          {
-            // action: <Button>Approve</Button>,
-            position: "top-right",
-          }
-        );
+        if ((payload.new as Appointment).doctorId !== user?.id) {
+          toast.error(
+            `Appointment deleted successfully at ${fDateTime(payload.commit_timestamp)}`,
+            {
+              // action: <Button>Approve</Button>,
+              position: "top-right",
+            }
+          );
+        }
         // Remove the appointment from the list
         setAppointments((prevAppointments) =>
           prevAppointments.filter((a) => a.id !== (payload.old as { id: string }).id)
