@@ -30,6 +30,7 @@ import {
   updateAppointmentAction,
 } from "@actions/appointments.action";
 import RHFSingleSelect from "@ui/hook-form/RHFSingleSelect";
+import { appointmentChannel, broadcastAppointmentUpdate } from "@lib/supabase/client";
 
 type Props = {
   edit?: boolean;
@@ -106,6 +107,7 @@ export default function AppointmentForm({
         }
 
         result = await updateAppointmentAction(currentAppointment.id, data);
+        broadcastAppointmentUpdate(result?.data ?? null);
       } else {
         result = await createAppointmentAction(data);
       }

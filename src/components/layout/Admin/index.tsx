@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { CheckCircleIcon } from "lucide-react";
 
 import { Button } from "@ui/button";
+import useAppointmentUpdates from "@hooks/useAppointmentUpdates";
 type Props = {
   children: React.ReactNode;
   user?: SessionUser;
@@ -29,6 +30,8 @@ export function ApplicationLayout({ children, user, tenant }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const [messages, setMessages] = useState<{ title: string; description: string }[]>([]);
+
+  useAppointmentUpdates(user);
 
   useEffect(() => {
     const channel = supabase

@@ -40,7 +40,7 @@ import { FadeIn } from "@/components/FadeIn";
 
 import DynamicBreadcrumb from "@ui/dynamic-breadcrumb";
 import { supabase } from "@lib/supabase/client";
-import { $Enums, Appointment, Patient, User } from "@prisma/client";
+import { Appointment } from "@prisma/client";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { fetchAppointment } from "@services/appointments.service";

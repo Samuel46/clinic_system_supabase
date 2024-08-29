@@ -46,6 +46,7 @@ import AppointmentSteps from "../details/AppointmentSteps";
 import { BadgeCheck } from "lucide-react";
 import { Divider } from "@/components/divider";
 import { updateAppointmentStatusAction } from "@actions/appointments.action";
+import { broadcastAppointmentUpdate } from "@lib/supabase/client";
 
 type Props = {
   edit?: boolean;
@@ -159,6 +160,8 @@ export default function RecordForm({
           toast.success(result.msg);
           // Refresh or redirect logic here
           router.refresh(); // or use router.push to navigate
+
+          broadcastAppointmentUpdate(result?.data ?? null);
 
           router.push(`/admin/patients/${appointment?.patientId}`);
         } else {

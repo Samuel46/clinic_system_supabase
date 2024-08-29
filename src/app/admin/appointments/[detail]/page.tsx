@@ -35,5 +35,5 @@ export default async function EditAppointmentPage({ params: { detail: id } }: Pr
   const user = await getCurrentUser();
 
   const { patients, appointment } = await getData(id);
-  return <AppointDetails appointment={appointment} />;
+  return <AppointDetails appointment={appointment} user={user} />;
 }

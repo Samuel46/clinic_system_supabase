@@ -15,6 +15,12 @@ import { ChevronRight } from "lucide-react";
 import DynamicBreadcrumb from "@ui/dynamic-breadcrumb";
 import AppointmentSteps from "./AppointmentSteps";
 
+import { SessionUser } from "@type/index";
+import useAppointmentPresence from "@hooks/useAppointmentPresence ";
+import { Avatar, AvatarButton } from "@/components/avatar";
+import { getInitials } from "@utils/index";
+import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
+
 type Props = {
   appointment: Prisma.AppointmentGetPayload<{
     include: {
@@ -25,9 +31,17 @@ type Props = {
       medicalRecord: true;
     };
   }> | null;
+  user?: SessionUser;
 };
 
-export default function AppointmentDetails({ appointment }: Props) {
+export default function AppointmentDetails({ appointment, user }: Props) {
+  const activeUsers = useAppointmentPresence(
+    appointment?.id ?? "",
+    user?.id ?? "",
+    user?.name ?? ""
+  );
+
+  console.log(activeUsers, "apppointments");
   const router = useRouter();
   return (
     <div>
@@ -54,6 +68,33 @@ export default function AppointmentDetails({ appointment }: Props) {
         />
 
         <>
+          <Subheading>Staff information</Subheading>
+          <DescriptionList className="mt-4">
+            <DescriptionTerm>Active staff working on this</DescriptionTerm>
+            <DescriptionDetails className="flex gap-x-2">
+              {activeUsers.map((item) => (
+                <Popover key={item.userId}>
+                  <PopoverTrigger>
+                    <AvatarButton
+                      square
+                      initials={getInitials(item.username)}
+                      className="size-8 bg-zinc-900 text-white dark:bg-white dark:text-black"
+                    />
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <DescriptionList>
+                      <DescriptionTerm>Full name</DescriptionTerm>
+                      <DescriptionDetails>{item.username}</DescriptionDetails>
+                      <DescriptionTerm>Status</DescriptionTerm>
+                      <DescriptionDetails>
+                        <Badge color="lime">{item.status}</Badge>
+                      </DescriptionDetails>
+                    </DescriptionList>
+                  </PopoverContent>
+                </Popover>
+              ))}
+            </DescriptionDetails>
+          </DescriptionList>
           <Subheading>Patient Information</Subheading>
           <DescriptionList className="mt-4">
             <DescriptionTerm>Full Name</DescriptionTerm>
