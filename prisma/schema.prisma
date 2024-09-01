@@ -59,18 +59,69 @@ model Tenant {
   users          User[]
 }
 
+model Schedule {
+  id         String      @id @default(uuid()) @db.Uuid
+  workDays   WorkDay[] // Stores an array of workday objects
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  user       User?
+  daysOff    DayOff[]
+  Invitation Invitation?
+}
+
+model WorkDay {
+  id         String    @id @default(uuid()) @db.Uuid
+  day        DayOfWeek  @unique
+  startTime  DateTime
+  endTime    DateTime
+  scheduleId String    @db.Uuid
+  schedule   Schedule  @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+
+  @@unique([scheduleId, day], name: "schedule_day")
+}
+
+enum DayOfWeek {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
+
+model DayOff {
+  id         String   @id @default(uuid()) @db.Uuid
+  name       String   @unique// e.g., "Vacation", "Sick Leave", "Holiday"
+  date       DateTime @unique
+  reason     String?
+  scheduleId String   @db.Uuid
+  schedule   Schedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+
+  @@unique([scheduleId, date], name: "schedule_date")
+}
+
 model Invitation {
-  email     String           @unique
-  token     String           @unique
-  expiresAt DateTime
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  id        String           @id @default(uuid()) @db.Uuid
-  tenantId  String           @db.Uuid
-  roleId    String           @db.Uuid
-  status    InvitationStatus @default(PENDING)
-  role      Role             @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  tenant    Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  email      String           @unique
+  token      String           @unique
+  expiresAt  DateTime
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  id         String           @id @default(uuid()) @db.Uuid
+  tenantId   String           @db.Uuid
+  roleId     String           @db.Uuid
+  status     InvitationStatus @default(PENDING)
+  role       Role             @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  tenant     Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  scheduleId String?          @unique @db.Uuid // Optional field for linking a schedule
+  schedule   Schedule?        @relation(fields: [scheduleId], references: [id], onDelete: SetNull) // Optional relation
+}
+
+enum UserType {
+  FULL_TIME
+  PART_TIME
+  CONTRACTOR
+  INTERN
 }
 
 model User {
@@ -87,6 +138,7 @@ model User {
   id               String           @id @default(uuid()) @db.Uuid
   tenantId         String           @db.Uuid
   roleId           String           @db.Uuid
+  type             UserType         @default(FULL_TIME)
   accounts         Account[]
   appointments     Appointment[]
   Billing          Billing[]
@@ -96,6 +148,8 @@ model User {
   Sales            Sale[]
   sessions         Session[]
   Treatment        Treatment[]
+  scheduleId       String?          @unique @db.Uuid // Optional field for linking a schedule
+  schedule         Schedule?        @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
   role             Role             @relation(fields: [roleId], references: [id], onDelete: Cascade)
   tenant           Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
@@ -133,7 +187,7 @@ model VerificationToken {
 
 model Patient {
   name           String
-  email          String           
+  email          String
   phone          String
   address        String
   dateOfBirth    DateTime?
@@ -150,7 +204,7 @@ model Patient {
   prescription   Prescription[]
   treatment      Treatment[]
 
- @@unique([tenantId, email], name: "tenantId_email_unique")
+  @@unique([tenantId, email], name: "tenantId_email_unique")
 }
 
 model Appointment {

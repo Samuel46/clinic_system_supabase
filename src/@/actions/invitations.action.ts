@@ -9,7 +9,6 @@ import {
   updateInvitation,
 } from "@services/invitation.service";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export async function createInvitationAction(
   data: CreateInvitationInput
@@ -26,10 +25,14 @@ export async function createInvitationAction(
     }
 
     // Create the invitation
-    const invitation = await createInvitation(data);
+    const { invitation } = await createInvitation(data);
 
     // Send the invitation email
-    await sendInvitationEmail(invitation.email, invitation.token, invitation.tenant.name);
+    // await sendInvitationEmail(
+    //   invitation.email,
+    //   invitation.token,
+    //   invitation?.tenant.name
+    // );
     revalidatePath("/admin/invitations");
 
     return {

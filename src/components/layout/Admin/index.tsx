@@ -21,6 +21,8 @@ import { CheckCircleIcon } from "lucide-react";
 
 import { Button } from "@ui/button";
 import useAppointmentUpdates from "@hooks/useAppointmentUpdates";
+import useUpdateInventory from "@hooks/useUpdateInventory";
+import Notification from "@ui/notification";
 type Props = {
   children: React.ReactNode;
   user?: SessionUser;
@@ -32,6 +34,10 @@ export function ApplicationLayout({ children, user, tenant }: Props) {
   const [messages, setMessages] = useState<{ title: string; description: string }[]>([]);
 
   useAppointmentUpdates(user);
+
+  const { warnings, setWarnings } = useUpdateInventory(tenant, user);
+
+  console.log(warnings, "warningsss");
 
   useEffect(() => {
     const channel = supabase
@@ -116,6 +122,9 @@ export function ApplicationLayout({ children, user, tenant }: Props) {
       sidebar={<SideBarAccount user={user} tenant={tenant} />}
     >
       <ToasterProvider />
+      {warnings.length > 0 && (
+        <Notification messages={warnings} type="warning" setMessages={setWarnings} />
+      )}
 
       {children}
     </SidebarLayout>

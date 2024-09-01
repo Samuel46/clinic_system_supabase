@@ -10,7 +10,7 @@ import FormProvider from "@ui/hook-form/FormProvider";
 import { RHFInput } from "@ui/hook-form";
 import { Button } from "@ui/button";
 import { Icons } from "@ui/icons";
-import { Invitation, PermissionAction, Role, Tenant } from "@prisma/client";
+import { Invitation, Role, Tenant } from "@prisma/client";
 
 import { toast } from "sonner";
 
@@ -24,6 +24,7 @@ import {
   updateInvitationAction,
 } from "@actions/invitations.action";
 import RHFSingleSelect from "@ui/hook-form/RHFSingleSelect";
+import ScheduleProgress from "../schedules/scheduleProgress";
 
 type Props = {
   edit?: boolean;
@@ -97,7 +98,7 @@ export default function InvitationForm({
       if (result.success) {
         // Show success notification
         toast.success(result.msg);
-        router.push("/admin/invitations");
+        router.push(`/admin/invitations/workdays?id=${result.data?.id}`);
         // Reset the form
         reset();
       } else {
@@ -114,19 +115,16 @@ export default function InvitationForm({
   };
 
   return (
-    <FadeIn className=" space-y-3 pt-10">
+    <FadeIn className=" space-y-6 pt-10">
       <DynamicBreadcrumb />
-      <div className="flex w-full flex-wrap items-center justify-between gap-4  pb-6 dark:border-white/10">
-        <Heading className=" font-display pb-4">
+      <ScheduleProgress />
+
+      <div className="flex w-full flex-wrap items-center justify-between gap-4  dark:border-white/10">
+        <Heading className=" font-display ">
           {edit ? "Update invitation" : "Add invitation"}
         </Heading>
-        <div className="flex gap-4">
-          {/* <Button variant="outline" onClick={generatePermission}>
-            {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}Generate
-            Permissions
-          </Button> */}
-        </div>
       </div>
+
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-6 w-full">
           <div className="grid gap-2">

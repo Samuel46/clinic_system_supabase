@@ -14,6 +14,21 @@ export const createInvitation = async (data: CreateInvitationInput) => {
     const expiresAt = new Date();
     expiresAt.setHours(expiresAt.getHours() + 24);
 
+    // Create a shell schedule
+    const shellSchedule = await tx.schedule.create({
+      data: {
+        workDays: {
+          create: [], // Initialize empty, to be filled later
+        },
+        daysOff: {
+          create: [], // Initialize empty, to be filled later
+        },
+        // Invitation: {
+        //   connect: { id: invitation.id }, // Link the schedule to the invitation
+        // },
+      },
+    });
+
     // Create the invitation
     const invitation = await tx.invitation.create({
       data: {
@@ -22,14 +37,17 @@ export const createInvitation = async (data: CreateInvitationInput) => {
         expiresAt,
         tenantId,
         roleId,
+        scheduleId: shellSchedule.id,
       },
-
       include: {
         tenant: true,
+        schedule: true,
       },
     });
 
-    return invitation;
+    return {
+      invitation,
+    };
   });
 };
 

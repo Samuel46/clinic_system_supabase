@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import { cn } from "@lib/utils"; // Ensure you have the cn function from previous utils
 import {
@@ -10,21 +10,28 @@ import {
 
 type NotificationProps = {
   type: "success" | "warning" | "error";
-  message: string;
+  message?: string;
+  messages?: Array<string>;
+  setMessages?: Dispatch<SetStateAction<string[]>>;
 };
 
-const Notification: React.FC<NotificationProps> = ({ type, message }) => {
+const Notification: React.FC<NotificationProps> = ({
+  type,
+  message,
+  messages,
+  setMessages,
+}) => {
   const [visible, setVisible] = useState(true);
 
   if (!visible) return null;
 
   const warnings = message
-    .split("Warning: ")
+    ?.split("Warning: ")
     .filter((msg) => msg)
     .map((msg) => `Warning: ${msg}`);
 
   const msgs = message
-    .split("Inventory ")
+    ?.split("Inventory ")
     .filter((msg) => msg)
     .map((msg) => `Inventory ${msg}`);
 
@@ -68,17 +75,23 @@ const Notification: React.FC<NotificationProps> = ({ type, message }) => {
         </h3>
         <div className="mt-2">
           {type === "warning" &&
-            warnings.map((item, index) => (
+            warnings?.map((item, index) => (
               <p key={index} className="pb-2">
                 {item}
               </p>
             ))}
           {type === "success" &&
-            msgs.map((item, index) => (
+            msgs?.map((item, index) => (
               <p key={index} className="pb-2">
                 {item}
               </p>
             ))}
+
+          {messages?.map((item, index) => (
+            <p key={index} className="pb-2">
+              {item}
+            </p>
+          ))}
 
           {type === "error" && <p>{message}</p>}
         </div>
@@ -97,7 +110,9 @@ const Notification: React.FC<NotificationProps> = ({ type, message }) => {
               type === "error" &&
                 "bg-red-50 text-red-500 hover:bg-red-100 focus:ring-red-600 focus:ring-offset-red-50"
             )}
-            onClick={() => setVisible(false)}
+            onClick={
+              messages ? () => setMessages && setMessages([]) : () => setVisible(false)
+            }
           >
             <span className="sr-only">Dismiss</span>
             <XMarkIcon aria-hidden="true" className="h-5 w-5" />

@@ -124,8 +124,8 @@ export default function SaleDetails({ sale, warning, success }: Props) {
           </Button>
         </div>
       </div>
-      {warning && <Notification type="warning" message={warning} />}
-      {success && <Notification type="success" message={success} />}
+      {/* {warning && <Notification type="warning" message={warning} />}
+      {success && <Notification type="success" message={success} />} */}
       <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
         <CardHeader className="flex flex-row items-start bg-muted/50">
           <div className="grid gap-0.5">

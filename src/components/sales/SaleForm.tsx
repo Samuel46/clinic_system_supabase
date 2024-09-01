@@ -50,7 +50,7 @@ export default function SaleForm({ edit, currentSale, user, medications }: Props
       userId: user?.id,
       customerId: currentSale?.customerId || undefined,
       totalAmount: currentSale?.totalAmount || 0,
-      paymentMethod: currentSale?.paymentMethod || PaymentMethod.CASH,
+      paymentMethod: currentSale?.paymentMethod || PaymentMethod.MPESA,
       paymentStatus: currentSale?.paymentStatus || PaymentStatus.PENDING,
       cashReceived: 0,
       items:

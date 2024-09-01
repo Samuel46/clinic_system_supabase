@@ -1,4 +1,4 @@
-import { Appointment, AppointmentStatus, Patient, User } from "@prisma/client";
+import { Appointment, AppointmentStatus, DayOff, Patient, User } from "@prisma/client";
 import { CreatePatientInput } from "../@/schemas/patients.schemas";
 import { format } from "date-fns";
 import { SessionUser } from "@type/index";
@@ -74,3 +74,55 @@ export const transformAppointment = (
   updatedAt: item?.updatedAt ?? new Date(),
   role: user?.role ?? "",
 });
+
+// Function to create Date objects for 9 AM and 5 PM
+export const createTime = (hours: number, minutes: number): Date => {
+  const date = new Date();
+  date.setHours(hours, minutes, 0, 0);
+  return date;
+};
+
+// Default workDays for Monday to Friday, 9 AM to 5 PM
+
+export const getKenyanPublicHolidays = () => {
+  const currentYear = new Date().getFullYear();
+  return [
+    {
+      name: "New Year's Day",
+      date: new Date(currentYear, 0, 1),
+      reason: "Public Holiday",
+    }, // January 1st
+    { name: "Madaraka Day", date: new Date(currentYear, 5, 1), reason: "Public Holiday" }, // June 1st
+    {
+      name: "Mashujaa Day",
+      date: new Date(currentYear, 9, 20),
+      reason: "Public Holiday",
+    }, // October 20th
+    {
+      name: "Jamhuri Day",
+      date: new Date(currentYear, 11, 12),
+      reason: "Public Holiday",
+    }, // December 12th
+    {
+      name: "Christmas Day",
+      date: new Date(currentYear, 11, 25),
+      reason: "Public Holiday",
+    }, // December 25th
+  ];
+};
+
+export const areDayOffsEqual = (
+  daysOff1: Omit<DayOff, "scheduleId" | "id">[],
+  daysOff2: Omit<DayOff, "scheduleId" | "id">[]
+): boolean => {
+  if (daysOff1.length !== daysOff2.length) return false;
+
+  return daysOff1.every((dayOff, index) => {
+    const dayOff2 = daysOff2[index];
+    return (
+      dayOff.name === dayOff2.name &&
+      dayOff.reason === dayOff2.reason &&
+      new Date(dayOff.date).getTime() === new Date(dayOff2.date).getTime() // Compare dates as timestamps
+    );
+  });
+};
