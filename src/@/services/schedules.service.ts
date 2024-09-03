@@ -42,6 +42,15 @@ export const createWorkDayInvite = async (
   }
 
   return await prisma_next.$transaction(async (tx) => {
+    // Ensure the schedule exists
+    const scheduleExists = await tx.schedule.findUnique({
+      where: { id: scheduleId },
+    });
+
+    if (!scheduleExists) {
+      throw new Error(`Schedule with ID ${scheduleId} not found.`);
+    }
+
     for (const workDay of workDays) {
       await tx.workDay.upsert({
         where: {
@@ -51,7 +60,6 @@ export const createWorkDayInvite = async (
           },
         },
         update: {
-          day: workDay.day,
           startTime: workDay.startTime,
           endTime: workDay.endTime,
         },
@@ -73,6 +81,7 @@ export const createWorkDayInvite = async (
     });
   });
 };
+
 export const createDaysOffInvite = async (
   scheduleId: string,
   daysOff: { name: string; date: Date; reason?: string }[]

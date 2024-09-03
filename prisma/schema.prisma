@@ -71,7 +71,7 @@ model Schedule {
 
 model WorkDay {
   id         String    @id @default(uuid()) @db.Uuid
-  day        DayOfWeek  @unique
+  day        DayOfWeek  
   startTime  DateTime
   endTime    DateTime
   scheduleId String    @db.Uuid
@@ -92,8 +92,8 @@ enum DayOfWeek {
 
 model DayOff {
   id         String   @id @default(uuid()) @db.Uuid
-  name       String   @unique// e.g., "Vacation", "Sick Leave", "Holiday"
-  date       DateTime @unique
+  name       String   // e.g., "Vacation", "Sick Leave", "Holiday"
+  date       DateTime
   reason     String?
   scheduleId String   @db.Uuid
   schedule   Schedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
