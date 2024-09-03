@@ -1,6 +1,5 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createRoleSchema } from "@schemas/role.schemas";
 import React, { useEffect, useMemo, useState, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FadeIn } from "../FadeIn";
@@ -10,7 +9,7 @@ import FormProvider from "@ui/hook-form/FormProvider";
 import { RHFInput } from "@ui/hook-form";
 import { Button } from "@ui/button";
 import { Icons } from "@ui/icons";
-import { Invitation, Role, Tenant } from "@prisma/client";
+import { Prisma, Role, Tenant } from "@prisma/client";
 
 import { toast } from "sonner";
 
@@ -28,7 +27,16 @@ import ScheduleProgress from "../schedules/scheduleProgress";
 
 type Props = {
   edit?: boolean;
-  currentInvitation?: Invitation | null;
+  currentInvitation?: Prisma.InvitationGetPayload<{
+    include: {
+      schedule: {
+        include: {
+          daysOff: true;
+          workDays: true;
+        };
+      };
+    };
+  }> | null;
   tenants: Tenant[];
   roles: Role[];
 };
@@ -39,6 +47,8 @@ export default function InvitationForm({
   roles,
 }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  console.log(currentInvitation, "currentInitation");
 
   const router = useRouter();
 
@@ -98,7 +108,7 @@ export default function InvitationForm({
       if (result.success) {
         // Show success notification
         toast.success(result.msg);
-        router.push(`/admin/invitations/workdays?id=${result.data?.id}`);
+        router.push(`/admin/invitations/workdays?id=${result.data?.scheduleId}`);
         // Reset the form
         reset();
       } else {
@@ -117,7 +127,12 @@ export default function InvitationForm({
   return (
     <FadeIn className=" space-y-6 pt-10">
       <DynamicBreadcrumb />
-      <ScheduleProgress />
+      <ScheduleProgress
+        currentInvitation={Boolean(currentInvitation)}
+        currentDayOff={Boolean(currentInvitation?.schedule?.daysOff.length)}
+        currentWorkDay={Boolean(currentInvitation?.schedule?.workDays.length)}
+        id={currentInvitation?.scheduleId ?? ""}
+      />
 
       <div className="flex w-full flex-wrap items-center justify-between gap-4  dark:border-white/10">
         <Heading className=" font-display ">

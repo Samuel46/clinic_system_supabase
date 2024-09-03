@@ -114,11 +114,11 @@ const WorkDayItems: React.FC<WorkDayComponentProps> = ({ workdays }) => {
 
         <Button
           type="button"
-          variant="secondary"
+          variant="outline"
           className={cn(errors.workDays?.message && "bg-red-200", "my-4")}
           onClick={() => handleAdd()}
         >
-          <Plus className="mr-2" /> Add Work Day
+          <Plus className="mr-2 size-4" /> Add
         </Button>
         {errors.workDays?.message && (
           <FormDescription className="text-wrap text-[0.8rem] font-medium text-red-600">

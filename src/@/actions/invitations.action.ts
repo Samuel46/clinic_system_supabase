@@ -1,5 +1,5 @@
 "use server";
-import { Invitation } from "@prisma/client";
+import { Invitation, Prisma } from "@prisma/client";
 import { CreateInvitationInput } from "@schemas/invitation.schemas";
 import { sendInvitationEmail } from "@services/emails.service";
 import {
@@ -8,6 +8,7 @@ import {
   deleteInvitation,
   updateInvitation,
 } from "@services/invitation.service";
+import { InvitationWithRoleAndTenant } from "@type/index";
 import { revalidatePath } from "next/cache";
 
 export async function createInvitationAction(
@@ -49,6 +50,27 @@ export async function createInvitationAction(
     };
   }
 }
+
+export const sendInvitationEmailAction = async (
+  invitation: Prisma.InvitationGetPayload<{
+    include: {
+      tenant: true;
+    };
+  }>
+): Promise<{ success: boolean; msg: string }> => {
+  try {
+    if (!invitation.email || !invitation.token || !invitation.tenant.name) {
+      throw new Error("Invalid invitation data. Missing required fields.");
+    }
+
+    await sendInvitationEmail(invitation.email, invitation.token, invitation.tenant.name);
+
+    return { success: true, msg: "Invitation email sent successfully" };
+  } catch (error: any) {
+    console.error("Failed to send invitation email:", error);
+    return { success: false, msg: error.message || "Failed to send invitation email" };
+  }
+};
 
 export const updateInvitationAction = async (
   id: string,

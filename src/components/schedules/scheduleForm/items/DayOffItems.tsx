@@ -104,11 +104,11 @@ const DayOffItems: React.FC<DayOffComponentProps> = ({ dayoff }) => {
 
         <Button
           type="button"
-          variant="secondary"
+          variant="outline"
           className={cn(errors.daysOff?.message && "bg-red-200", "my-4")}
           onClick={() => handleAdd()}
         >
-          <Plus className="mr-2" /> Add Day Off
+          <Plus className="mr-2 size-4" /> Add
         </Button>
         {errors.daysOff?.message && (
           <FormDescription className="text-wrap text-[0.8rem] font-medium text-red-600">

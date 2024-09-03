@@ -23,11 +23,13 @@ import ScheduleProgress from "../scheduleProgress";
 import { Button } from "@ui/button";
 import { Icons } from "@ui/icons";
 import { createWorkDayAction, updateWorkDayAction } from "@actions/workdays.actions";
+import { ChevronRight } from "lucide-react";
+import { Divider } from "@/components/divider";
 
 interface Props {
   edit?: boolean;
   currentSchedule?: Prisma.ScheduleGetPayload<{
-    include: { workDays: true; daysOff: true };
+    include: { workDays: true; daysOff: true; Invitation: true };
   }> | null;
   user?: SessionUser;
 }
@@ -58,13 +60,15 @@ export default function WorkDaysForm({ edit, currentSchedule, user }: Props) {
   const defaultValues = useMemo(
     () => ({
       workDays:
-        currentSchedule?.workDays.map((item) => ({
-          day: item.day,
-          startTime: item.startTime,
-          endTime: item.endTime,
-        })) || defaultWorkDays,
+        (edit &&
+          currentSchedule?.workDays.map((item) => ({
+            day: item.day,
+            startTime: item.startTime,
+            endTime: item.endTime,
+          }))) ||
+        defaultWorkDays,
     }),
-    [currentSchedule, defaultWorkDays]
+    [currentSchedule, defaultWorkDays, edit]
   );
 
   const methods = useForm<CreateScheduleInput>({
@@ -102,7 +106,7 @@ export default function WorkDaysForm({ edit, currentSchedule, user }: Props) {
       if (result.success) {
         toast.success(result.msg);
         router.refresh();
-        // router.push(`daysoff?id=${currentSchedule?.id}`);
+        // ;
       } else {
         toast.error(result.msg);
       }
@@ -118,7 +122,12 @@ export default function WorkDaysForm({ edit, currentSchedule, user }: Props) {
     <FadeIn className=" space-y-6 pt-10">
       <DynamicBreadcrumb />
 
-      <ScheduleProgress id="sssss" />
+      <ScheduleProgress
+        id={currentSchedule?.id}
+        currentDayOff={Boolean(currentSchedule?.daysOff.length)}
+        currentWorkDay={Boolean(currentSchedule?.workDays.length)}
+        currentInvitation={Boolean(currentSchedule?.Invitation)}
+      />
 
       <Heading className=" font-display ">
         {edit ? "Update schedule" : "Add schedule"}
@@ -131,13 +140,27 @@ export default function WorkDaysForm({ edit, currentSchedule, user }: Props) {
           <Button
             disabled={isLoading}
             type="submit"
-            className=" py-6   font-bold font-display items-center place-self-end"
+            variant={edit ? "secondary" : "default"}
+            className=" py-6    items-center place-self-end"
           >
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-            {edit ? "Update schedule" : "Create schedule"}
+            {edit ? "Update workdays" : "Create workdays"}
           </Button>
         </div>
       </FormProvider>
+      {edit && (
+        <div className="flex  flex-col space-y-6  items-end">
+          <Divider />
+          <Button
+            className=" font-semibold p-6"
+            type="submit"
+            onClick={() => router.push(`daysoff?id=${currentSchedule?.id}`)}
+          >
+            Next
+            <ChevronRight className=" size-5" />
+          </Button>
+        </div>
+      )}
     </FadeIn>
   );
 }

@@ -12,7 +12,7 @@ export const createInvitation = async (data: CreateInvitationInput) => {
 
     // Set expiration time (e.g., 24 hours from now)
     const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 24);
+    expiresAt.setHours(expiresAt.getHours() + 48);
 
     // Create a shell schedule
     const shellSchedule = await tx.schedule.create({

@@ -13,6 +13,15 @@ async function getData(id: string) {
     where: {
       id,
     },
+
+    include: {
+      schedule: {
+        include: {
+          workDays: true,
+          daysOff: true,
+        },
+      },
+    },
   });
   const tenants = await prisma_next.tenant.findMany({
     orderBy: {

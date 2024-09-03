@@ -30,7 +30,7 @@ const ScheduleProgress: React.FC<Props> = ({
       {
         id: "01",
         name: "Invitation",
-        href: `/admin/invitations/create`,
+        href: `/admin/invitations/create?id=${id}`,
         status:
           pathname?.startsWith(`/admin/invitations/create`) && currentInvitation
             ? "complete-current"
@@ -43,7 +43,7 @@ const ScheduleProgress: React.FC<Props> = ({
       {
         id: "02",
         name: "Work Day",
-        href: `/admin/invitations/workdays?id=${id}`,
+        href: currentWorkDay ? `/admin/invitations/workdays?id=${id}` : "#!!",
         status:
           pathname?.startsWith(`/admin/invitations/workdays`) && currentWorkDay
             ? "complete-current"
@@ -56,7 +56,7 @@ const ScheduleProgress: React.FC<Props> = ({
       {
         id: "03",
         name: "Day Off",
-        href: `/admin/invitations/daysoff?id=${id}`,
+        href: currentDayOff ? `/admin/invitations/daysoff?id=${id}` : "#!!",
         status:
           pathname?.startsWith(`/admin/invitations/daysoff`) && currentDayOff
             ? "complete-current"

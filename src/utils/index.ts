@@ -1,5 +1,4 @@
 import { Appointment, AppointmentStatus, DayOff, Patient, User } from "@prisma/client";
-import { CreatePatientInput } from "../@/schemas/patients.schemas";
 import { format } from "date-fns";
 import { SessionUser } from "@type/index";
 
@@ -92,17 +91,7 @@ export const getKenyanPublicHolidays = () => {
       date: new Date(currentYear, 0, 1),
       reason: "Public Holiday",
     }, // January 1st
-    { name: "Madaraka Day", date: new Date(currentYear, 5, 1), reason: "Public Holiday" }, // June 1st
-    {
-      name: "Mashujaa Day",
-      date: new Date(currentYear, 9, 20),
-      reason: "Public Holiday",
-    }, // October 20th
-    {
-      name: "Jamhuri Day",
-      date: new Date(currentYear, 11, 12),
-      reason: "Public Holiday",
-    }, // December 12th
+
     {
       name: "Christmas Day",
       date: new Date(currentYear, 11, 25),

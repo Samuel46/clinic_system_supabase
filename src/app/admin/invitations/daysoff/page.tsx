@@ -16,6 +16,11 @@ async function getData(id: string) {
     include: {
       workDays: true,
       daysOff: true,
+      Invitation: {
+        include: {
+          tenant: true,
+        },
+      },
     },
   });
 
@@ -26,5 +31,11 @@ export default async function CreateDayOffPage({ searchParams: { id } }: Props) 
 
   const hasDaysOff = Boolean(schedule?.daysOff?.length);
 
-  return <OffDaysForm currentSchedule={schedule ?? null} edit={hasDaysOff} />;
+  return (
+    <OffDaysForm
+      currentSchedule={schedule ?? null}
+      edit={hasDaysOff}
+      invitation={schedule?.Invitation ?? null}
+    />
+  );
 }

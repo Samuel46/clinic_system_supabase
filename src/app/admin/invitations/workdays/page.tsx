@@ -9,28 +9,25 @@ interface Props {
 }
 
 async function getData(id: string) {
-  const invitation = await prisma_next.invitation.findUnique({
+  const schedule = await prisma_next.schedule.findUnique({
     where: {
       id,
     },
 
     include: {
-      schedule: {
-        include: {
-          workDays: true,
-          daysOff: true,
-        },
-      },
+      workDays: true,
+      daysOff: true,
+      Invitation: true,
     },
   });
 
-  return { invitation };
+  return { schedule };
 }
 
 export default async function CreateWorkDayPage({ searchParams: { id } }: Props) {
-  const { invitation } = await getData(id);
+  const { schedule } = await getData(id);
 
-  const hasWorkDays = Boolean(invitation?.schedule?.workDays?.length);
+  const hasWorkDays = Boolean(schedule?.workDays?.length);
 
-  return <WorkDaysForm currentSchedule={invitation?.schedule} edit={hasWorkDays} />;
+  return <WorkDaysForm currentSchedule={schedule} edit={hasWorkDays} />;
 }
