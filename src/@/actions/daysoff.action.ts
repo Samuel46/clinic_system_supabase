@@ -6,7 +6,6 @@ import {
   deleteDayOff,
   filterNewDayOffsByIndex,
   findExistingDayOffs,
-  getDayOffByName,
 } from "@services/dayoffs.service";
 import { createDaysOffInvite } from "@services/schedules.service";
 
@@ -26,18 +25,6 @@ export const createDayOffAction = async (
 
     // Extract new dayoffs from the user input
     const newDayOffs = await filterNewDayOffsByIndex(id, data.daysOff);
-
-    for (const dayOffInput of newDayOffs) {
-      const existingDayOff = await getDayOffByName(dayOffInput.name);
-
-      if (existingDayOff) {
-        return {
-          success: false,
-          data: null,
-          msg: `Day off for name ${dayOffInput.name} already exists.`,
-        };
-      }
-    }
 
     // Extract dates and check for existing day-offs
     const dates = newDayOffs.map((dayOff) => dayOff.date);
@@ -83,18 +70,6 @@ export const updateDayOffAction = async (
     }
     // Extract new dayoffs from the user input
     const newDayOffs = await filterNewDayOffsByIndex(id, data.daysOff);
-
-    for (const dayOffInput of newDayOffs) {
-      const existingDayOff = await getDayOffByName(dayOffInput.name);
-
-      if (existingDayOff) {
-        return {
-          success: false,
-          data: null,
-          msg: `Day off for name ${dayOffInput.name} already exists.`,
-        };
-      }
-    }
 
     const dates = newDayOffs.map((dayOff) => dayOff.date);
 

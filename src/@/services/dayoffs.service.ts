@@ -34,12 +34,6 @@ export const getDayOffById = async (id: string): Promise<DayOff | null> => {
   });
 };
 
-export const getDayOffByName = async (name: string): Promise<DayOff | null> => {
-  return await prisma_next.dayOff.findUnique({
-    where: { name: name.toLowerCase() },
-  });
-};
-
 export const getAllDayOff = async (id: string): Promise<DayOff[] | null> => {
   return await prisma_next.dayOff.findMany({
     where: { scheduleId: id },
