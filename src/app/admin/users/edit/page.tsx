@@ -2,10 +2,9 @@ import { UserForm } from "@/components/users";
 import prisma_next from "@lib/db";
 import { getCurrentUser } from "@lib/session";
 import React from "react";
-
 interface Props {
-  params: {
-    edit: string;
+  searchParams: {
+    id: string;
   };
 }
 async function getData(id: string) {
@@ -22,7 +21,7 @@ async function getData(id: string) {
 
   return { currentUser, roles };
 }
-export default async function EditUserPage({ params: { edit: id } }: Props) {
+export default async function EditUserPage({ searchParams: { id } }: Props) {
   const { currentUser, roles } = await getData(id);
   const user = await getCurrentUser();
 

@@ -3,7 +3,6 @@ import { Invitation } from "@prisma/client";
 import { CreateUserInput, UpdateUserInput } from "@schemas/auth.schemas";
 import bcrypt from "bcrypt";
 import { addHours } from "date-fns";
-import { Resend } from "resend";
 import { v4 as uuidv4 } from "uuid";
 
 export async function assignRoleToUser(userId: string, roleId: string) {
@@ -31,6 +30,7 @@ export const registerUser = async (
         hashedPassword,
         tenantId: invitation.tenantId,
         roleId: invitation.roleId,
+        scheduleId: invitation.scheduleId,
       },
     });
 

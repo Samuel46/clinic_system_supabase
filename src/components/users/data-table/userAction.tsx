@@ -33,7 +33,7 @@ export default function UserAction({ row }: { row: Row<UserWithRoleAndTenant> })
   const [isPending, startTransition] = useTransition();
 
   const handleEdit = async () => {
-    push(`users/${row.original.id}`);
+    push(`users/edit?id=${row.original.id}`);
   };
 
   const handleDropdownMenu = () => {

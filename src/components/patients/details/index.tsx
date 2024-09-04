@@ -6,7 +6,7 @@ import PatientInfo from "./PatientInfo";
 import PatientBills from "./PatientBills";
 import PatientAppointments from "./PatientAppointments";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Billing, Patient, Prescription, Prisma } from "@prisma/client";
+import { Patient, Prisma } from "@prisma/client";
 import { Avatar } from "@/components/avatar";
 import { getInitials } from "@utils/index";
 import PatientPrescriptions from "./PatientPrescriptions";
@@ -68,7 +68,7 @@ export default function PatientDetails({
           className="h-32 w-full object-cover lg:h-48 rounded-2xl"
         />
       </div>
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pb-10">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 ">
         <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
           <div className="flex">
             <Avatar

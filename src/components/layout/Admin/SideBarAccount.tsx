@@ -5,6 +5,7 @@ import {
   SidebarBody,
   SidebarFooter,
   SidebarHeader,
+  SidebarHeading,
   SidebarItem,
   SidebarLabel,
   SidebarSection,
@@ -17,6 +18,7 @@ import {
   ClockIcon,
   Cog6ToothIcon,
   DocumentIcon,
+  QuestionMarkCircleIcon,
   ShareIcon,
   Square2StackIcon,
   SwatchIcon,
@@ -30,11 +32,12 @@ import AccountDropdownMenu from "./AccountDropdownMenu";
 import { Tenant } from "@prisma/client";
 import { Dropdown, DropdownButton } from "@/components/dropdown";
 
-import { Activity, Percent, ShoppingBasket, Tablets } from "lucide-react";
+import { Activity, Percent, ShoppingBasket, SparklesIcon, Tablets } from "lucide-react";
 import { cn } from "@lib/utils";
 import { Icons } from "@ui/icons";
 import { SessionUser } from "@type/index";
 import { getInitials } from "@utils/index";
+import { Divider } from "@/components/divider";
 
 type Props = {
   user?: SessionUser;
@@ -64,44 +67,83 @@ export default function SideBarAccount({ user, tenant }: Props) {
             />
             <SidebarLabel>Dashboard</SidebarLabel>
           </SidebarItem>
+          {/* <SidebarDivider /> */}
 
-          {(user?.role === "Admin" ||
-            user?.role === "Pharmacist" ||
-            user?.role === "Clinic") && (
+          {user?.role === "Admin" && (
             <>
               <SidebarItem
-                href="/admin/invitations"
-                current={pathname?.startsWith("/admin/invitations")}
+                href="/admin/tenants"
+                current={pathname?.startsWith("/admin/tenants")}
               >
-                <ShareIcon
-                  className={cn(
-                    pathname?.startsWith("/admin/invitations")
-                      ? "text-black "
-                      : "text-gray-500",
-                    "h-5 "
-                  )}
-                />
-                <SidebarLabel>Invitations</SidebarLabel>
+                <Square2StackIcon />
+                <SidebarLabel>Tenants</SidebarLabel>
               </SidebarItem>
               <SidebarItem
-                href="/admin/users"
-                current={pathname?.startsWith("/admin/users")}
+                href="/admin/roles"
+                current={pathname?.startsWith("/admin/roles")}
               >
-                <UsersIcon
+                <SwatchIcon
                   className={cn(
-                    pathname?.startsWith("/admin/users")
+                    pathname?.startsWith("/admin/roles")
                       ? "text-black "
                       : "text-gray-500",
                     "h-5 "
                   )}
                 />
-                <SidebarLabel>Staff</SidebarLabel>
+                <SidebarLabel>Roles</SidebarLabel>
+              </SidebarItem>
+
+              <SidebarItem
+                href="/admin/settings"
+                current={pathname?.startsWith("/admin/settings")}
+              >
+                <Cog6ToothIcon />
+                <SidebarLabel>Settings</SidebarLabel>
               </SidebarItem>
             </>
           )}
+        </SidebarSection>
 
-          {user?.role !== "Pharmacist" && (
-            <>
+        {(user?.role === "Clinic" ||
+          (user?.role !== "Admin" && user?.role !== "Pharmacist")) && (
+          <>
+            <SidebarSection>
+              <SidebarHeading>Clinic</SidebarHeading>
+
+              {user?.role === "Clinic" && (
+                <>
+                  <SidebarItem
+                    href="/admin/users"
+                    current={pathname?.startsWith("/admin/users")}
+                  >
+                    <UsersIcon
+                      className={cn(
+                        pathname?.startsWith("/admin/users")
+                          ? "text-black "
+                          : "text-gray-500",
+                        "h-5 "
+                      )}
+                    />
+                    <SidebarLabel>Staff</SidebarLabel>
+                  </SidebarItem>
+
+                  <SidebarItem
+                    href="/admin/invitations"
+                    current={pathname?.startsWith("/admin/invitations")}
+                  >
+                    <ShareIcon
+                      className={cn(
+                        pathname?.startsWith("/admin/invitations")
+                          ? "text-black "
+                          : "text-gray-500",
+                        "h-5 "
+                      )}
+                    />
+                    <SidebarLabel>Invitations</SidebarLabel>
+                  </SidebarItem>
+                </>
+              )}
+
               <SidebarItem
                 href="/admin/patients"
                 current={pathname?.startsWith("/admin/patients")}
@@ -145,7 +187,10 @@ export default function SideBarAccount({ user, tenant }: Props) {
                 />
                 <SidebarLabel>Medical record</SidebarLabel>
               </SidebarItem>
+            </SidebarSection>
 
+            <SidebarSection>
+              <SidebarHeading>Finance</SidebarHeading>
               <SidebarItem
                 href="/admin/bills"
                 current={pathname?.startsWith("/admin/bills")}
@@ -160,34 +205,93 @@ export default function SideBarAccount({ user, tenant }: Props) {
                 />
                 <SidebarLabel>Bills</SidebarLabel>
               </SidebarItem>
-            </>
-          )}
+            </SidebarSection>
+          </>
+        )}
 
-          {user?.role === "Admin" && (
-            <>
-              <SidebarItem
-                href="/admin/tenants"
-                current={pathname?.startsWith("/admin/tenants")}
-              >
-                <Square2StackIcon />
-                <SidebarLabel>Tenants</SidebarLabel>
-              </SidebarItem>
+        {/* Admin */}
+        {user?.role === "Admin" && (
+          <>
+            <SidebarSection>
+              <SidebarHeading>Clinic</SidebarHeading>
 
               <SidebarItem
-                href="/admin/roles"
-                current={pathname?.startsWith("/admin/roles")}
+                href="/admin/invitations"
+                current={pathname?.startsWith("/admin/invitations")}
               >
-                <SwatchIcon
+                <ShareIcon
                   className={cn(
-                    pathname?.startsWith("/admin/roles")
+                    pathname?.startsWith("/admin/invitations")
                       ? "text-black "
                       : "text-gray-500",
                     "h-5 "
                   )}
                 />
-                <SidebarLabel>Roles</SidebarLabel>
+                <SidebarLabel>Invitations</SidebarLabel>
+              </SidebarItem>
+              <SidebarItem
+                href="/admin/users"
+                current={pathname?.startsWith("/admin/users")}
+              >
+                <UsersIcon
+                  className={cn(
+                    pathname?.startsWith("/admin/users")
+                      ? "text-black "
+                      : "text-gray-500",
+                    "h-5 "
+                  )}
+                />
+                <SidebarLabel>Staff</SidebarLabel>
               </SidebarItem>
 
+              <SidebarItem
+                href="/admin/patients"
+                current={pathname?.startsWith("/admin/patients")}
+              >
+                <UserGroupIcon
+                  className={cn(
+                    pathname?.startsWith("/admin/patients")
+                      ? "text-black "
+                      : "text-gray-500",
+                    "h-5 "
+                  )}
+                />
+                <SidebarLabel>Patients</SidebarLabel>
+              </SidebarItem>
+
+              <SidebarItem
+                href="/admin/appointments"
+                current={pathname?.startsWith("/admin/appointments")}
+              >
+                <ClockIcon
+                  className={cn(
+                    pathname?.startsWith("/admin/appointments")
+                      ? "text-black "
+                      : "text-gray-500",
+                    "h-5 "
+                  )}
+                />
+                <SidebarLabel>Appointments</SidebarLabel>
+              </SidebarItem>
+
+              <SidebarItem
+                href="/admin/medical-records"
+                current={pathname?.startsWith("/admin/medical-records")}
+              >
+                <DocumentIcon
+                  className={cn(
+                    pathname?.startsWith("/admin/medical-records")
+                      ? "text-black "
+                      : "text-gray-500",
+                    "h-5 "
+                  )}
+                />
+                <SidebarLabel>Medical record</SidebarLabel>
+              </SidebarItem>
+            </SidebarSection>
+
+            <SidebarSection>
+              <SidebarHeading>Pharmacy</SidebarHeading>
               <SidebarItem
                 href="/admin/prescriptions"
                 current={pathname?.startsWith("/admin/prescriptions")}
@@ -201,33 +305,6 @@ export default function SideBarAccount({ user, tenant }: Props) {
                   )}
                 />
                 <SidebarLabel>Prescriptions</SidebarLabel>
-              </SidebarItem>
-
-              <SidebarItem
-                href="/admin/settings"
-                current={pathname?.startsWith("/admin/settings")}
-              >
-                <Cog6ToothIcon />
-                <SidebarLabel>Settings</SidebarLabel>
-              </SidebarItem>
-            </>
-          )}
-
-          {(user?.role === "Pharmacist" || user?.role === "Admin") && (
-            <>
-              <SidebarItem
-                href="/admin/sales"
-                current={pathname?.startsWith("/admin/sales")}
-              >
-                <Percent
-                  className={cn(
-                    pathname?.startsWith("/admin/sales")
-                      ? "text-black "
-                      : "text-gray-500",
-                    "h-5 "
-                  )}
-                />
-                <SidebarLabel>Sales</SidebarLabel>
               </SidebarItem>
 
               <SidebarItem
@@ -259,15 +336,119 @@ export default function SideBarAccount({ user, tenant }: Props) {
                 />
                 <SidebarLabel>Inventory</SidebarLabel>
               </SidebarItem>
-            </>
-          )}
-        </SidebarSection>
+            </SidebarSection>
 
-        {/* <SidebarSection className="max-lg:hidden">
-          <SidebarHeading>Upcoming Events</SidebarHeading>
+            <SidebarSection>
+              <SidebarHeading>Finance</SidebarHeading>
+              <SidebarItem
+                href="/admin/bills"
+                current={pathname?.startsWith("/admin/bills")}
+              >
+                <BanknotesIcon
+                  className={cn(
+                    pathname?.startsWith("/admin/bills")
+                      ? "text-black "
+                      : "text-gray-500",
+                    "h-5 "
+                  )}
+                />
+                <SidebarLabel>Bills</SidebarLabel>
+              </SidebarItem>
 
-          <SidebarItem href={"#!!"}>Danch event</SidebarItem>
-        </SidebarSection> */}
+              <SidebarItem
+                href="/admin/sales"
+                current={pathname?.startsWith("/admin/sales")}
+              >
+                <Percent
+                  className={cn(
+                    pathname?.startsWith("/admin/sales")
+                      ? "text-black "
+                      : "text-gray-500",
+                    "h-5 "
+                  )}
+                />
+                <SidebarLabel>Sales</SidebarLabel>
+              </SidebarItem>
+            </SidebarSection>
+          </>
+        )}
+
+        {/* End of admin */}
+
+        {user?.role === "Pharmacist" && (
+          <SidebarSection className="max-lg:hidden mt-6">
+            <SidebarHeading>Pharmacy</SidebarHeading>
+            <SidebarItem
+              href="/admin/invitations"
+              current={pathname?.startsWith("/admin/invitations")}
+            >
+              <ShareIcon
+                className={cn(
+                  pathname?.startsWith("/admin/invitations")
+                    ? "text-black "
+                    : "text-gray-500",
+                  "h-5 "
+                )}
+              />
+              <SidebarLabel>Invitations</SidebarLabel>
+            </SidebarItem>
+
+            <SidebarItem
+              href="/admin/users"
+              current={pathname?.startsWith("/admin/users")}
+            >
+              <UsersIcon
+                className={cn(
+                  pathname?.startsWith("/admin/users") ? "text-black " : "text-gray-500",
+                  "h-5 "
+                )}
+              />
+              <SidebarLabel>Staff</SidebarLabel>
+            </SidebarItem>
+            <SidebarItem
+              href="/admin/sales"
+              current={pathname?.startsWith("/admin/sales")}
+            >
+              <Percent
+                className={cn(
+                  pathname?.startsWith("/admin/sales") ? "text-black " : "text-gray-500",
+                  "h-5 "
+                )}
+              />
+              <SidebarLabel>Sales</SidebarLabel>
+            </SidebarItem>
+
+            <SidebarItem
+              href="/admin/medications"
+              current={pathname?.startsWith("/admin/medications")}
+            >
+              <Icons.medication
+                className={cn(
+                  pathname?.startsWith("/admin/medications")
+                    ? "text-black "
+                    : "text-gray-500",
+                  "h-5 "
+                )}
+              />
+              <SidebarLabel>Medications</SidebarLabel>
+            </SidebarItem>
+
+            <SidebarItem
+              href="/admin/inventory"
+              current={pathname?.startsWith("/admin/inventory")}
+            >
+              <ShoppingBasket
+                className={cn(
+                  pathname?.startsWith("/admin/inventory")
+                    ? "text-black "
+                    : "text-gray-500",
+                  "h-5 "
+                )}
+              />
+              <SidebarLabel>Inventory</SidebarLabel>
+            </SidebarItem>
+          </SidebarSection>
+        )}
 
         <SidebarSpacer />
 
