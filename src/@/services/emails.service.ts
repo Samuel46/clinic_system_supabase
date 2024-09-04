@@ -10,7 +10,7 @@ export async function sendResetEmail(
   let url: string;
 
   if (process.env.NODE_ENV === "production") {
-    url = `https://clinic-system-henna.vercel.app/auth/reset?token=${token}&email=${email}`;
+    url = `https://clinic-system-supabase.vercel.app/auth/reset?token=${token}&email=${email}`;
   } else {
     url = `http://localhost:3000/auth/reset?token=${token}&email=${email}`;
   }
@@ -32,7 +32,7 @@ export const sendInvitationEmail = async (email: string, token: string, name: st
   let url: string;
 
   if (process.env.NODE_ENV === "production") {
-    url = `https://clinic-system-henna.vercel.app/auth/register?token=${token}`;
+    url = `https://clinic-system-supabase.vercel.app/auth/register?token=${token}`;
   } else {
     url = `http://localhost:3000/auth/register?token=${token}`;
   }
