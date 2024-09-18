@@ -56,7 +56,7 @@ export default function TreatmentForm({
       type: currentTreatment?.type || TreatmentType.MEDICATION,
       description: currentTreatment?.description || "",
     }),
-    [currentTreatment]
+    [currentTreatment, user, appointment]
   );
 
   const methods = useForm<CreateTreatmentInput>({

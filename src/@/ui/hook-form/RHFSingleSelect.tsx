@@ -53,13 +53,27 @@ export default function RHFSingleSelect({ name, label, options, onSelect }: Prop
                     aria-expanded={open}
                     className={cn(
                       error ? "bg-red-200 hover:bg-red-100" : "bg-white",
-                      "h-8  px-6   ring-4  ring-transparent transition text-base/6 text-neutral-500    w-full justify-start py-[2.67rem] rounded-2xl border border-neutral-300 relative focus:border-neutral-950 focus:outline-none focus:ring-neutral-950/5 group-first:rounded-2xl disabled:cursor-not-allowed disabled:opacity-50 "
+                      "h-8 px-6  ring-4  ring-transparent transition text-base/6 text-neutral-500   w-full justify-start py-[2.67rem] rounded-2xl border border-neutral-300 relative focus:border-neutral-950 focus:outline-none focus:ring-neutral-950/5 group-first:rounded-2xl disabled:cursor-not-allowed disabled:opacity-50  peer "
                     )}
                   >
                     <ChevronsUpDown className="mr-2 h-5 w-5 absolute right-6" />
-                    {selectedValue
-                      ? options.find((option) => option.value === selectedValue)?.label
-                      : label}
+
+                    <div
+                      className={cn(
+                        selectedValue ? "-mb-6" : "",
+                        " flex flex-col items-center transition-all duration-200  "
+                      )}
+                    >
+                      {selectedValue && (
+                        <h6 className=" text-neutral-950 pointer-events-none absolute left-6 top-4  origin-left  transition-all duration-200 peer-focus:-translate-y-4  text-xs font-semibold peer-focus:font-semibold ">
+                          {label}
+                        </h6>
+                      )}
+
+                      {selectedValue
+                        ? options.find((option) => option.value === selectedValue)?.label
+                        : label}
+                    </div>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-full p-0" align="start">

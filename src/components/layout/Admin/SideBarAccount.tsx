@@ -18,7 +18,6 @@ import {
   ClockIcon,
   Cog6ToothIcon,
   DocumentIcon,
-  QuestionMarkCircleIcon,
   ShareIcon,
   Square2StackIcon,
   SwatchIcon,
@@ -32,7 +31,16 @@ import AccountDropdownMenu from "./AccountDropdownMenu";
 import { Tenant } from "@prisma/client";
 import { Dropdown, DropdownButton } from "@/components/dropdown";
 
-import { Activity, Percent, ShoppingBasket, SparklesIcon, Tablets } from "lucide-react";
+import {
+  Activity,
+  Brain,
+  Percent,
+  ShoppingBasket,
+  SparklesIcon,
+  Stethoscope,
+  Syringe,
+  Tablets,
+} from "lucide-react";
 import { cn } from "@lib/utils";
 import { Icons } from "@ui/icons";
 import { SessionUser } from "@type/index";
@@ -335,6 +343,51 @@ export default function SideBarAccount({ user, tenant }: Props) {
                   )}
                 />
                 <SidebarLabel>Inventory</SidebarLabel>
+              </SidebarItem>
+
+              <SidebarItem
+                href="/admin/treatments"
+                current={pathname?.startsWith("/admin/treatments")}
+              >
+                <Stethoscope
+                  className={cn(
+                    pathname?.startsWith("/admin/treatments")
+                      ? "text-black "
+                      : "text-gray-500",
+                    "h-5 "
+                  )}
+                />
+                <SidebarLabel>Treatments</SidebarLabel>
+              </SidebarItem>
+
+              <SidebarItem
+                href="/admin/supplies"
+                current={pathname?.startsWith("/admin/supplies")}
+              >
+                <Syringe
+                  className={cn(
+                    pathname?.startsWith("/admin/supplies")
+                      ? "text-black "
+                      : "text-gray-500",
+                    "h-5 "
+                  )}
+                />
+                <SidebarLabel>Supplies</SidebarLabel>
+              </SidebarItem>
+
+              <SidebarItem
+                href="/admin/procedures/list"
+                current={pathname?.startsWith("/admin/procedures/list")}
+              >
+                <Brain
+                  className={cn(
+                    pathname?.startsWith("/admin/procedures/list")
+                      ? "text-black "
+                      : "text-gray-500",
+                    "h-5 "
+                  )}
+                />
+                <SidebarLabel>Procedures</SidebarLabel>
               </SidebarItem>
             </SidebarSection>
 

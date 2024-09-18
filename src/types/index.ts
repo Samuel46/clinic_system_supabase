@@ -9,6 +9,7 @@ import {
   MedicalCheckup,
   Treatment,
   InvitationStatus,
+  TreatmentType,
 } from "@prisma/client";
 import { DefaultUser } from "next-auth";
 
@@ -187,4 +188,37 @@ export type SaleColumns = {
   paymentStatus: string;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type SupplyColumns = {
+  id: string;
+  name: string;
+  description: string | null;
+  unitCost: number;
+  createdAt: Date;
+  updatedAt: Date;
+  role?: string;
+};
+
+export type ProcedureColumns = {
+  id: string;
+  name: string;
+  description: string;
+  steps: number;
+  equipment: number;
+  createdAt: Date;
+  updatedAt: Date;
+  role?: string;
+};
+
+export type TreatmentColumns = {
+  id: string;
+  name: string;
+  description: string;
+  doctor: string;
+  procedure: string;
+  type: TreatmentType;
+  createdAt: Date;
+  updatedAt: Date;
+  role?: string;
 };

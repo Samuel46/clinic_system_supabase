@@ -57,11 +57,13 @@ model Tenant {
   sales          Sale[]
   treatment      Treatment[]
   users          User[]
+  Procedure      Procedure[]
+  Component      Component[]
 }
 
 model Schedule {
   id         String      @id @default(uuid()) @db.Uuid
-  workDays   WorkDay[] // Stores an array of workday objects
+  workDays   WorkDay[] 
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   user       User?
@@ -71,7 +73,7 @@ model Schedule {
 
 model WorkDay {
   id         String    @id @default(uuid()) @db.Uuid
-  day        DayOfWeek  
+  day        DayOfWeek
   startTime  DateTime
   endTime    DateTime
   scheduleId String    @db.Uuid
@@ -92,7 +94,7 @@ enum DayOfWeek {
 
 model DayOff {
   id         String   @id @default(uuid()) @db.Uuid
-  name       String   // e.g., "Vacation", "Sick Leave", "Holiday"
+  name       String // e.g., "Vacation", "Sick Leave", "Holiday"
   date       DateTime
   reason     String?
   scheduleId String   @db.Uuid
@@ -152,6 +154,8 @@ model User {
   schedule         Schedule?        @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
   role             Role             @relation(fields: [roleId], references: [id], onDelete: Cascade)
   tenant           Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  Procedure        Procedure[]
+  Component        Component[]
 
   @@index([tenantId, email], map: "tenant_email_unique")
 }
@@ -314,25 +318,102 @@ model MedicalCheckup {
   @@index([tenantId, checkupDate, doctorId], map: "tenant_doctor_checkup_date_index")
 }
 
+model Procedure {
+  id          String               @id @default(uuid()) @db.Uuid
+  name        String // Name of the procedure (e.g., "Appendectomy", "Physical Therapy Session")
+  description String? // Detailed description of the procedure
+  steps       ProcedureStep[] 
+  equipment   ProcedureEquipment[] 
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  tenantId    String               @db.Uuid
+  userId      String?              @db.Uuid
+  tenant      Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user        User?                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  treatment Treatment[] // Treatments that use this procedure
+
+  @@index([tenantId, name], map: "tenant_name_index")
+  @@index([tenantId, createdAt, updatedAt], map: "tenant_created_updated_index_procedure")
+}
+
+model ProcedureStep {
+  id          String    @id @default(uuid()) @db.Uuid
+  procedureId String    @db.Uuid
+  stepNumber  Int // Order of the step in the procedure
+  description String // Description of the step (e.g., "Make incision", "Administer anesthesia")
+  duration    Int? // Estimated duration of the step in minutes
+  role        String? // Role responsible for the step (e.g., "Surgeon", "Nurse")
+  procedure   Procedure @relation(fields: [procedureId], references: [id], onDelete: Cascade)
+
+  @@unique([procedureId, stepNumber])
+}
+
+model ProcedureEquipment {
+  id          String    @id @default(uuid()) @db.Uuid
+  procedureId String    @db.Uuid
+  equipmentId String    @db.Uuid
+  quantity    Int // Quantity of the equipment used in the procedure
+  equipment   Component @relation(fields: [equipmentId], references: [id], onDelete: Cascade) // Links to the components model for equipment
+  procedure   Procedure @relation(fields: [procedureId], references: [id], onDelete: Cascade)
+
+  @@unique([procedureId, equipmentId])
+}
+
+model Component {
+  id                 String               @id @default(uuid()) @db.Uuid
+  name               String               @unique
+  description        String?
+  unitCost           Float
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  tenantId           String               @db.Uuid
+  userId             String?              @db.Uuid
+  tenant             Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  treatments         TreatmentComponent[] // Relation to TreatmentComponent
+  ProcedureEquipment ProcedureEquipment[] // Relation to ProcedureEquipment
+  user               User?                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, name], map: "tenant_name_index_component")
+  @@index([tenantId, createdAt, updatedAt], map: "tenant_created_updated_index_component")
+}
+
+model TreatmentComponent {
+  id          String @id @default(uuid()) @db.Uuid
+  treatmentId String @db.Uuid
+  componentId String @db.Uuid
+  quantity    Int // Number of components used in this treatment
+
+  treatment Treatment @relation(fields: [treatmentId], references: [id], onDelete: Cascade)
+  component Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
+
+  @@unique([treatmentId, componentId])
+}
+
 model Treatment {
-  treatmentDate   DateTime       @default(now())
+  id              String        @id @default(uuid()) @db.Uuid
+  treatmentDate   DateTime      @default(now())
+  name            String @unique
   type            TreatmentType
   description     String
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  id              String         @id @default(uuid()) @db.Uuid
-  tenantId        String         @db.Uuid
-  patientId       String         @db.Uuid
-  doctorId        String         @db.Uuid
-  appointmentId   String?        @unique @db.Uuid
-  medicalRecordId String?        @db.Uuid
-  Billing         Billing[]
-  medicalRecord   MedicalRecord?
-  Prescription    Prescription[]
-  appointment     Appointment?   @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
-  doctor          User           @relation(fields: [doctorId], references: [id], onDelete: Cascade)
-  patient         Patient        @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  tenant          Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @default(now()) @updatedAt
+  tenantId        String        @db.Uuid
+  patientId       String?        @db.Uuid
+  doctorId        String        @db.Uuid
+  appointmentId   String?       @unique @db.Uuid
+  medicalRecordId String?       @db.Uuid
+  procedureId     String?        @db.Uuid // Link to a specific Procedure
+  procedure       Procedure?     @relation(fields: [procedureId], references: [id], onDelete: Cascade) // A treatment belongs to one procedure
+
+  Billing            Billing[]
+  medicalRecord      MedicalRecord?
+  Prescription       Prescription[]
+  appointment        Appointment?         @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  doctor             User                 @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patient            Patient?              @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  tenant             Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  treatmentEquipments TreatmentComponent[]
 
   @@index([tenantId, treatmentDate, doctorId], map: "tenant_doctor_treatment_date_index")
 }
