@@ -53,7 +53,6 @@ async function getData(user?: SessionUser, id?: string) {
 
 export default async function CreateInvitationPage({ searchParams: { id } }: Props) {
   const user = await getCurrentUser();
-  console.log(user);
 
   const { tenants, roles, invitation } = await getData(user, id);
 

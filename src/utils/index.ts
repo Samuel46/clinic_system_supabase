@@ -115,3 +115,44 @@ export const areDayOffsEqual = (
     );
   });
 };
+
+/**
+ * Get newly added items based on the length difference between two arrays.
+ * @param currentItems - The array of current items.
+ * @param newItems - The array of new items.
+ * @returns - The array of newly added items.
+ */
+export function getNewInputs<T>(currentItems: T[], newItems: T[]): T[] {
+  // Compare the lengths of currentItems and newItems
+  const currentLength = currentItems.length;
+  const newLength = newItems.length;
+
+  // If newItems doesn't have more items, return an empty array (no new inputs)
+  if (newLength <= currentLength) {
+    return [];
+  }
+
+  // Slice the newly added items based on the difference in length
+  return newItems.slice(currentLength);
+}
+
+/**
+ * Find duplicates between two arrays based on a comparison function.
+ * @param array1 - The first array of items.
+ * @param array2 - The second array of items.
+ * @param compareFn - Function to compare two items.
+ * @returns - The array of duplicate items.
+ */
+export function findDuplicates<T>(
+  array1: T[],
+  array2: T[],
+  compareFn: (a: T, b: T) => boolean
+): T[] {
+  // Create an array of JSON strings for array1
+  const array1Strings = array1.map((item) => JSON.stringify(item));
+
+  // Find duplicates in array2 by checking if they exist in the array1Strings
+  return array2.filter((item2) =>
+    array1Strings.some((item1String) => compareFn(item2, JSON.parse(item1String)))
+  );
+}

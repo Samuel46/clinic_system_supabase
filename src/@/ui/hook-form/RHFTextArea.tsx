@@ -24,9 +24,18 @@ export default function RHFTextArea({ name, label }: Props) {
       render={({ field, fieldState: { error } }) => {
         return (
           <FormItem>
+            <FormLabel
+              htmlFor="reasonForVisit"
+              className={cn(
+                field.value ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
+                "text-base/6 text-neutral-500 transform transition-all duration-300 ease-in-out"
+              )}
+            >
+              {label}
+            </FormLabel>
             <FormControl>
-              <div className="group relative z-0 transition-all focus-within:z-10">
-                <Textarea className="resize-none " {...field} />
+              <div className="group relative z-0 transition-all focus-within:z-10 ">
+                <Textarea className="resize-none rounded-2xl " {...field} />
 
                 <label
                   htmlFor={id}
@@ -36,7 +45,7 @@ export default function RHFTextArea({ name, label }: Props) {
                       : "text-base/6 text-neutral-500 peer-focus:text-neutral-950 peer-[:not(:placeholder-shown)]:text-neutral-950",
                     field.value !== "" &&
                       " transition-all  duration-300 peer-[:not(:placeholder-shown)]:hidden  ",
-                    "pointer-events-none absolute left-6 top-1/2 origin-left -mt-4  font-display  transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold  peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold "
+                    "pointer-events-none absolute left-6 top-1/2 -mt-3 origin-left font-display transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold "
                   )}
                 >
                   {label}

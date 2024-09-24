@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@lib/supabase/client";
 import { SessionUser } from "@type/index";
-import { Sale, Tenant } from "@prisma/client";
+import { Prisma, Sale, Tenant } from "@prisma/client";
 import { toast } from "sonner";
 
 const useUpdateInventory = (tenant: Tenant | null, user?: SessionUser) => {
@@ -40,7 +40,30 @@ const useUpdateInventory = (tenant: Tenant | null, user?: SessionUser) => {
 
         console.log(fullSale, "Sale with populated items and medication details");
 
-        const updateInventoryPromises = fullSale.items.map(async (item) => {
+        const saleWithItems = fullSale.items as unknown as Prisma.SaleItemGetPayload<{
+          include: {
+            medication: true;
+          };
+        }>[];
+
+        const aggregatedItems = saleWithItems.reduce(
+          (acc, item) => {
+            const existingItem = acc.find((i) => i.medicationId === item.medicationId);
+            if (existingItem) {
+              existingItem.quantity += item.quantity;
+            } else {
+              acc.push({ ...item });
+            }
+            return acc;
+          },
+          [] as Prisma.SaleItemGetPayload<{
+            include: {
+              medication: true;
+            };
+          }>[]
+        );
+
+        const updateInventoryPromises = aggregatedItems.map(async (item) => {
           // Fetch the current quantity and threshold from the Inventory table
           const { data: inventory, error: fetchError } = await supabase
             .from("Inventory")
@@ -57,6 +80,15 @@ const useUpdateInventory = (tenant: Tenant | null, user?: SessionUser) => {
           if (inventory) {
             // Calculate new quantity
             let newQuantity = inventory.quantity - item.quantity;
+
+            console.log(newQuantity, "new quantity", newQuantity < 0, "newQuantity < 0");
+            console.log(
+              item.quantity,
+              "item.quantity",
+              inventory.quantity < item.quantity,
+              "inventory.quantity < item.quantity"
+            );
+            console.log(inventory.quantity, "inventory.quantity");
             let statusMessage = `Inventory update for medicationId ${item.medicationId} (${item?.medication?.name}): `;
 
             // Ensure the quantity is not negative
@@ -70,6 +102,8 @@ const useUpdateInventory = (tenant: Tenant | null, user?: SessionUser) => {
               newQuantity = 0;
               statusMessage += `Original quantity less than sold quantity; set to 0. `;
             }
+
+            console.log(statusMessage, "stattus....");
 
             // Check if new quantity is below threshold
             if (newQuantity < inventory.threshold) {

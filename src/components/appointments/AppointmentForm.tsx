@@ -18,7 +18,7 @@ import { Appointment, AppointmentStatus, Patient } from "@prisma/client";
 
 import { useRouter } from "next/navigation";
 import { SessionUser } from "@type/index";
-import { Label } from "@ui/label";
+
 import RHFTextArea from "@ui/hook-form/RHFTextArea";
 import { hasDataChanged } from "@utils/index";
 import {
@@ -30,7 +30,7 @@ import {
   updateAppointmentAction,
 } from "@actions/appointments.action";
 import RHFSingleSelect from "@ui/hook-form/RHFSingleSelect";
-import { appointmentChannel, broadcastAppointmentUpdate } from "@lib/supabase/client";
+import { broadcastAppointmentUpdate } from "@lib/supabase/client";
 
 type Props = {
   edit?: boolean;
