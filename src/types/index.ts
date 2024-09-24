@@ -164,6 +164,16 @@ export type InventoryColumns = {
 	createdAt: Date;
 	updatedAt: Date;
 };
+export type UpdateInventoryItems = {
+	medicationId: string;
+	medicationName: string;
+	previousQuantity: number;
+	newQuantity: number;
+	threshold: number;
+	quantityWouldGoNegative: boolean;
+	originalQuantityLessThanSold: boolean;
+	belowThreshold: boolean;
+};
 
 export type PrescriptionColumns = {
 	id: string;

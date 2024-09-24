@@ -1,13 +1,14 @@
-import { InventoryList } from "@/components/inventory";
-import { inventoryColumns } from "@/components/inventory/data-table/columns";
-
-import prisma_next from "@lib/db";
-
-import { InventoryColumns } from "@type/index";
-import { generateTitle, generateUniqueOptions } from "@utils/tenants";
 import React from "react";
 
-async function getData() {
+import { InventoryList } from "@/components/inventory";
+import { inventoryColumns } from "@/components/inventory/data-table/columns";
+import prisma_next from "@lib/db";
+import { getCurrentUser } from "@lib/session";
+import { InventoryColumns, SessionUser } from "@type/index";
+import { generateTitle, generateUniqueOptions } from "@utils/tenants";
+import { Inventory } from "@prisma/client";
+
+async function getData(user?: SessionUser) {
   const inventories = await prisma_next.inventory.findMany({
     orderBy: {
       createdAt: "desc",
@@ -18,11 +19,18 @@ async function getData() {
     },
   });
 
-  return { inventories };
+  const tenant = await prisma_next.tenant.findUnique({
+    where: {
+      id: user?.tenantId,
+    },
+  });
+
+  return { inventories, tenant };
 }
 
 export default async function InventoryListPage() {
-  const { inventories } = await getData();
+  const user = await getCurrentUser();
+  const { inventories, tenant } = await getData(user);
 
   const data = inventories.map((item) => ({
     id: item.id,
@@ -46,6 +54,8 @@ export default async function InventoryListPage() {
 
   return (
     <InventoryList
+      user={user}
+      tenant={tenant}
       columns={inventoryColumns}
       data={data}
       filterableColumns={filterableColumns}
