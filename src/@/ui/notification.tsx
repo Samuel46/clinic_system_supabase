@@ -76,19 +76,19 @@ const Notification: React.FC<NotificationProps> = ({
         <div className="mt-2">
           {type === "warning" &&
             warnings?.map((item, index) => (
-              <p key={index} className="pb-2">
+              <p key={index} className="pb-2 text-sm">
                 {item}
               </p>
             ))}
           {type === "success" &&
             msgs?.map((item, index) => (
-              <p key={index} className="pb-2">
+              <p key={index} className="pb-2 text-sm">
                 {item}
               </p>
             ))}
 
           {messages?.map((item, index) => (
-            <p key={index} className="pb-2">
+            <p key={index} className="pb-2 text-sm">
               {item}
             </p>
           ))}

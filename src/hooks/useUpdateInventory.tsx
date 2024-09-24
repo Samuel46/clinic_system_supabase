@@ -153,6 +153,7 @@ const useUpdateInventory = (
           if (newSale.userId !== user.id) {
             toast.success("All inventory levels updated successfully for Sale ID:", {
               position: "top-right",
+              duration: 5000,
             });
           }
         }
