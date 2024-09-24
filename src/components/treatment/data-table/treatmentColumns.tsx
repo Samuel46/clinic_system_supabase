@@ -20,7 +20,7 @@ export const treatmentColumns: ColumnDef<TreatmentColumns>[] = [
     accessorKey: "description",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Description" />,
     cell: ({ row }) => (
-      <p className="max-w-[200px] font-medium truncate text-pretty">
+      <p className="max-w-[200px] text-sm truncate text-pretty">
         {row.getValue("description") || "N/A"}
       </p>
     ),
@@ -30,21 +30,21 @@ export const treatmentColumns: ColumnDef<TreatmentColumns>[] = [
     accessorKey: "type",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
     cell: ({ row }) => (
-      <p className="max-w-[150px] font-medium truncate text-pretty">
+      <p className="max-w-[150px] text-sm truncate text-pretty">
         {row.getValue("type") || "N/A"}
       </p>
     ),
   },
   {
     accessorKey: "doctor",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Doctor" />,
-    cell: ({ row }) => <p>created by-{row.getValue("doctor")} </p>,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Created by" />,
+    cell: ({ row }) => <p>{row.getValue("doctor")} </p>,
   },
   {
     accessorKey: "procedure",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Procedure" />,
     cell: ({ row }) => (
-      <p className="max-w-[150px] font-medium truncate text-pretty">
+      <p className="max-w-[150px] text-sm truncate text-pretty">
         {row.getValue("procedure") || "N/A"}
       </p>
     ),
@@ -62,6 +62,6 @@ export const treatmentColumns: ColumnDef<TreatmentColumns>[] = [
 
   {
     id: "actions",
-    cell: ({ row }) => <TreatmentAction row={row} />, // Procedure-specific action component
+    cell: ({ row }) => <TreatmentAction row={row} />,
   },
 ];
