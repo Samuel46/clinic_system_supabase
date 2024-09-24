@@ -1,6 +1,8 @@
+import { TreatmentType } from "@prisma/client";
 import { z } from "zod";
 
 export const treatmentSchema = z.object({
+  id: z.string().optional(),
   tenantId: z.string().min(1, { message: "Tenant ID is required" }),
   name: z.string().min(1, { message: "Treatment name is required" }),
   patientId: z.string().optional(),
@@ -9,7 +11,7 @@ export const treatmentSchema = z.object({
   procedureId: z.string().optional(),
   medicalRecordId: z.string().optional(),
   treatmentDate: z.date(),
-  type: z.enum(["MEDICATION", "THERAPY", "SURGERY", "OTHER"]),
+  type: z.nativeEnum(TreatmentType),
   description: z.string().min(1, "Treatment description is required"),
 });
 

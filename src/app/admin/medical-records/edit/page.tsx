@@ -1,42 +1,48 @@
+import React from "react";
+
 import { RecordForm } from "@/components/appointments/record";
 import prisma_next from "@lib/db";
 import { getCurrentUser } from "@lib/session";
-import React from "react";
 
 interface Props {
-  searchParams: {
-    id: string;
-  };
+	searchParams: {
+		id: string;
+	};
 }
 
 async function getData(id: string) {
-  const record = await prisma_next.medicalRecord.findUnique({
-    where: {
-      id,
-    },
+	const record = await prisma_next.medicalRecord.findUnique({
+		where: {
+			id,
+		},
 
-    include: {
-      checkups: true,
-      treatments: true,
-      appointment: true,
-    },
-  });
+		include: {
+			checkups: true,
+			treatments: {
+				include: {
+					doctor: true,
+					procedure: true,
+				},
+			},
+			appointment: true,
+		},
+	});
 
-  return { record };
+	return { record };
 }
 export default async function RecordFormPage({ searchParams: { id } }: Props) {
-  const user = await getCurrentUser();
+	const user = await getCurrentUser();
 
-  const { record } = await getData(id);
+	const { record } = await getData(id);
 
-  return (
-    <RecordForm
-      appointment={record?.appointment ?? null}
-      user={user}
-      checkup={record?.checkups}
-      treatment={record?.treatments}
-      currentMedicalRecord={record}
-      edit
-    />
-  );
+	return (
+		<RecordForm
+			appointment={record?.appointment ?? null}
+			user={user}
+			checkup={record?.checkups}
+			treatments={record?.treatments}
+			currentMedicalRecord={record}
+			edit
+		/>
+	);
 }

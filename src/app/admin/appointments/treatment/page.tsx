@@ -10,6 +10,11 @@ interface Props {
 }
 
 async function getData(id: string) {
+  const treatments = await prisma_next.treatment.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
   const appointment = await prisma_next.appointment.findUnique({
     where: {
       id,
@@ -22,15 +27,16 @@ async function getData(id: string) {
     },
   });
 
-  return { appointment };
+  return { appointment, treatments };
 }
 export default async function TreatmentPage({ searchParams: { id } }: Props) {
   const user = await getCurrentUser();
 
-  const { appointment } = await getData(id);
+  const { appointment, treatments } = await getData(id);
 
   return (
     <TreatmentForm
+      treatments={treatments}
       user={user}
       appointment={appointment}
       currentTreatment={appointment?.treatment}

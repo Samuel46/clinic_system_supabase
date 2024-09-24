@@ -28,6 +28,7 @@ export const createTreatmentAction = async (
     }
 
     const treatment = await createTreatment(data);
+
     return { success: true, data: treatment, msg: "Treatment created successfully" };
   } catch (error: any) {
     console.error("Failed to create treatment:", error);
@@ -52,6 +53,27 @@ export const updateTreatmentAction = async (
       success: false,
       data: null,
       msg: error.message || "Failed to update treatment",
+    };
+  }
+};
+
+export const updateTreatmentAppointmentAction = async (
+  treatmentId: string,
+  data: UpdateTreatmentInput
+): Promise<{ success: boolean; data: Treatment | null; msg: string }> => {
+  try {
+    const treatment = await updateTreatment(treatmentId, data);
+    return {
+      success: true,
+      data: treatment,
+      msg: "Treatment added to appointment successfully",
+    };
+  } catch (error: any) {
+    console.error("Failed to update treatment:", error);
+    return {
+      success: false,
+      data: null,
+      msg: error.message || "Failed dded to appointment treatment",
     };
   }
 };

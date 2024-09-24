@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { AppointmentStatus } from "@prisma/client";
+import { createTreatmentSchema } from "./treament.schemas";
 
 export const createAppointmentSchema = z
   .object({
@@ -23,11 +24,19 @@ export const createAppointmentSchema = z
     path: ["endTime"],
   });
 
+export const upsertTreatmentToAppointmentSchema = z.object({
+  treatment: z.array(createTreatmentSchema).optional(),
+});
+
 export const updateAppointmentStatusSchema = z.object({
   id: z.string().min(1, "Appointment ID is required"),
   status: z.enum(["COMPLETED"]).default("COMPLETED"),
 });
 
 export type UpdateAppointmentStatusInput = z.infer<typeof updateAppointmentStatusSchema>;
+
+export type UpsertTreatmentToAppointmentInput = z.infer<
+  typeof upsertTreatmentToAppointmentSchema
+>;
 
 export type CreateAppointmentInput = z.infer<typeof createAppointmentSchema>;
