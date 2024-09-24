@@ -3,8 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { DataTable } from "@ui/table/index";
-
+import { FadeIn } from "@/components/FadeIn";
+import { PlusCircleIcon } from "@heroicons/react/20/solid";
+import useUpdateInventory from "@hooks/useUpdateInventory";
+import { Inventory, Tenant } from "@prisma/client";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -18,10 +20,8 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-
+import { FilterableColumn, InventoryColumns, SessionUser } from "@type/index";
 import { Button } from "@ui/button";
-import { DataTableToolbar } from "@ui/table/DataTableToolbar";
-import { DataTablePagination } from "@ui/table/DataTablePagination";
 import {
   Card,
   CardContent,
@@ -30,23 +30,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@ui/card";
-
-import { PlusCircleIcon } from "@heroicons/react/20/solid";
-import { DataTableViewOptions } from "@ui/table/DataTableViewOptions";
-import { FilterableColumn } from "@type/index";
-import { FadeIn } from "@/components/FadeIn";
 import DynamicBreadcrumb from "@ui/dynamic-breadcrumb";
+import Notification from "@ui/notification";
+import { DataTablePagination } from "@ui/table/DataTablePagination";
+import { DataTableToolbar } from "@ui/table/DataTableToolbar";
+import { DataTableViewOptions } from "@ui/table/DataTableViewOptions";
+import { DataTable } from "@ui/table/index";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  data: InventoryColumns[];
   filterableColumns: FilterableColumn[];
+  user?: SessionUser;
+  tenant: Tenant | null;
 }
 
 export default function InventoryList<TData, TValue>({
   columns,
   data,
   filterableColumns,
+  user,
+  tenant,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -55,8 +59,10 @@ export default function InventoryList<TData, TValue>({
 
   const router = useRouter();
 
+  const { currentInventories } = useUpdateInventory(tenant, user, data);
+
   const table = useReactTable({
-    data,
+    data: currentInventories as TData[],
     columns,
     state: {
       sorting,
@@ -104,7 +110,7 @@ export default function InventoryList<TData, TValue>({
           </Button>
         </div>
       </div>
-
+      {/* {warnings.length > 0 && <Notification messages={warnings} type="warning" setMessages={setWarnings} />} */}
       <Card className=" rounded-2xl">
         <CardHeader>
           <CardTitle>Inventory</CardTitle>
