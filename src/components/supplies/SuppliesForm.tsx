@@ -70,7 +70,7 @@ export default function SuppliesForm({ edit, currentComponent, user }: Props) {
 
         if (result.success) {
           toast.success(result.msg);
-          router.push("/admin/supplies");
+          router.push("/admin/inventory/supplies");
         } else {
           toast.error(result.msg);
         }
@@ -81,7 +81,7 @@ export default function SuppliesForm({ edit, currentComponent, user }: Props) {
         if (result.success) {
           toast.success(result.msg);
           reset();
-          router.push("/admin/supplies");
+          router.push("/admin/inventory/supplies");
         } else {
           toast.error(result.msg);
         }

@@ -38,7 +38,6 @@ import { DataTableViewOptions } from "@ui/table/DataTableViewOptions";
 import { FilterableColumn } from "@type/index";
 import { FadeIn } from "@/components/FadeIn";
 
-import DynamicBreadcrumb from "@ui/dynamic-breadcrumb";
 import { supabase } from "@lib/supabase/client";
 import { toast } from "sonner";
 import { Component } from "@prisma/client";
@@ -115,7 +114,6 @@ export default function SuppliesList<TData, TValue>({
 
   return (
     <FadeIn className=" space-y-6">
-      <DynamicBreadcrumb />
       <div className="flex items-center bg-muted/70 p-8 py-10 rounded-2xl">
         <DataTableToolbar
           filterableColumns={filterableColumns}
@@ -128,7 +126,7 @@ export default function SuppliesList<TData, TValue>({
           <Button
             size="sm"
             className="h-8 gap-1"
-            onClick={() => router.push("supplies/create")}
+            onClick={() => router.push("/admin/inventory/supplies/create")}
           >
             <PlusCircleIcon className="h-3.5 w-3.5" />
             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { FadeIn } from "@/components/FadeIn";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import useUpdateInventory from "@hooks/useUpdateInventory";
-import { Inventory, Tenant } from "@prisma/client";
+import { Tenant } from "@prisma/client";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -30,8 +30,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@ui/card";
-import DynamicBreadcrumb from "@ui/dynamic-breadcrumb";
-import Notification from "@ui/notification";
+
 import { DataTablePagination } from "@ui/table/DataTablePagination";
 import { DataTableToolbar } from "@ui/table/DataTableToolbar";
 import { DataTableViewOptions } from "@ui/table/DataTableViewOptions";
@@ -87,7 +86,6 @@ export default function InventoryList<TData, TValue>({
 
   return (
     <FadeIn className=" space-y-6">
-      <DynamicBreadcrumb />
       <div className="flex items-center bg-muted/70 p-8 py-10 rounded-2xl">
         <DataTableToolbar
           filterableColumns={filterableColumns}
@@ -101,7 +99,7 @@ export default function InventoryList<TData, TValue>({
           <Button
             size="sm"
             className="h-8 gap-1"
-            onClick={() => router.push("inventory/create")}
+            onClick={() => router.push("/admin/inventory/create")}
           >
             <PlusCircleIcon className="h-3.5 w-3.5" />
             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">

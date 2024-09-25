@@ -101,6 +101,7 @@ export default function InventoryForm({
       if (result.success) {
         // Show success notification
         toast.success(result.msg);
+        router.back();
       } else {
         // Show error notification
         toast.error(result.msg);
@@ -115,18 +116,11 @@ export default function InventoryForm({
   };
 
   return (
-    <FadeIn className=" space-y-3 pt-10">
-      <DynamicBreadcrumb />
+    <FadeIn>
       <div className="flex w-full flex-wrap items-center justify-between gap-4  pb-6 dark:border-white/10">
-        <Heading className=" font-display pb-4">
+        <Heading className=" font-display ">
           {edit ? "Update inventory" : "Add inventory"}
         </Heading>
-        <div className="flex gap-4">
-          {/* <Button variant="outline" onClick={generatePermission}>
-            {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}Generate
-            Permissions
-          </Button> */}
-        </div>
       </div>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-6 w-full">

@@ -92,6 +92,7 @@ export default function MedicationForm({ edit, currentMedication, user }: Props)
       if (result.success) {
         // Show success notification
         toast.success(result.msg);
+        router.push("/admin/inventory/medications");
       } else {
         // Show error notification
         toast.error(result.msg);

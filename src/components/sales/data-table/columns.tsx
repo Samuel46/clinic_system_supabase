@@ -15,14 +15,14 @@ export const saleColumns: ColumnDef<SaleColumns>[] = [
   //   accessorKey: "tenantName",
   //   header: ({ column }) => <DataTableColumnHeader column={column} title="Tenant" />,
   //   cell: ({ row }) => (
-  //     <p className="max-w-[150px] truncate font-medium">{row.getValue("tenantName")}</p>
+  //     <p className="max-w-[150px] truncate ">{row.getValue("tenantName")}</p>
   //   ),
   // },
   {
     accessorKey: "userName",
     header: ({ column }) => <DataTableColumnHeader column={column} title="User" />,
     cell: ({ row }) => (
-      <p className="max-w-[150px] truncate font-medium">{row.getValue("userName")}</p>
+      <p className="max-w-[150px] truncate ">{row.getValue("userName")}</p>
     ),
 
     filterFn: (row, id, value) => {
@@ -44,11 +44,7 @@ export const saleColumns: ColumnDef<SaleColumns>[] = [
     cell: ({ row }) => {
       const amount: number = row.getValue("totalAmount") as number;
 
-      return (
-        <p className="max-w-[150px] truncate font-medium text-sm">
-          {formatAmountKsh(amount)}
-        </p>
-      );
+      return <p className="max-w-[150px] truncate  text-sm">{formatAmountKsh(amount)}</p>;
     },
   },
   {

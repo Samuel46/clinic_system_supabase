@@ -36,7 +36,6 @@ import {
   Brain,
   Percent,
   ShoppingBasket,
-  SparklesIcon,
   Stethoscope,
   Syringe,
   Tablets,
@@ -316,21 +315,6 @@ export default function SideBarAccount({ user, tenant }: Props) {
               </SidebarItem>
 
               <SidebarItem
-                href="/admin/medications"
-                current={pathname?.startsWith("/admin/medications")}
-              >
-                <Icons.medication
-                  className={cn(
-                    pathname?.startsWith("/admin/medications")
-                      ? "text-black "
-                      : "text-gray-500",
-                    "h-5 "
-                  )}
-                />
-                <SidebarLabel>Medications</SidebarLabel>
-              </SidebarItem>
-
-              <SidebarItem
                 href="/admin/inventory"
                 current={pathname?.startsWith("/admin/inventory")}
               >
@@ -358,21 +342,6 @@ export default function SideBarAccount({ user, tenant }: Props) {
                   )}
                 />
                 <SidebarLabel>Treatments</SidebarLabel>
-              </SidebarItem>
-
-              <SidebarItem
-                href="/admin/supplies"
-                current={pathname?.startsWith("/admin/supplies")}
-              >
-                <Syringe
-                  className={cn(
-                    pathname?.startsWith("/admin/supplies")
-                      ? "text-black "
-                      : "text-gray-500",
-                    "h-5 "
-                  )}
-                />
-                <SidebarLabel>Supplies</SidebarLabel>
               </SidebarItem>
 
               <SidebarItem
