@@ -38,7 +38,7 @@ export default function SupplyAction({ row }: { row: Row<SupplyColumns> }) {
   const [isPending, startTransition] = useTransition();
 
   const handleEdit = async () => {
-    push(`supplies/edit?id=${row.original.id}`);
+    push(`/admin/inventory/supplies/edit?id=${row.original.id}`);
   };
 
   const handleView = async () => {
@@ -81,7 +81,7 @@ export default function SupplyAction({ row }: { row: Row<SupplyColumns> }) {
             Edit
           </DropdownMenuItem>
 
-          <DropdownMenuItem onClick={() => handleView()}>
+          <DropdownMenuItem>
             <Icons.view className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             View
           </DropdownMenuItem>

@@ -34,7 +34,7 @@ export default function MedicationAction({ row }: { row: Row<MedicationColumns> 
   const [isPending, startTransition] = useTransition();
 
   const handleEdit = async () => {
-    push(`medications/${row.original.id}`);
+    push(`/admin/inventory/medications/${row.original.id}`);
   };
 
   const handleDropdownMenu = () => {
