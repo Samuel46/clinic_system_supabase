@@ -34,6 +34,7 @@ import { Dropdown, DropdownButton } from "@/components/dropdown";
 import {
   Activity,
   Brain,
+  HeartPulseIcon,
   Percent,
   ShoppingBasket,
   Stethoscope,
@@ -299,23 +300,9 @@ export default function SideBarAccount({ user, tenant }: Props) {
 
             <SidebarSection>
               <SidebarHeading>Pharmacy</SidebarHeading>
-              <SidebarItem
-                href="/admin/prescriptions"
-                current={pathname?.startsWith("/admin/prescriptions")}
-              >
-                <Tablets
-                  className={cn(
-                    pathname?.startsWith("/admin/prescriptions")
-                      ? "text-black "
-                      : "text-gray-500",
-                    "h-5 "
-                  )}
-                />
-                <SidebarLabel>Prescriptions</SidebarLabel>
-              </SidebarItem>
 
               <SidebarItem
-                href="/admin/inventory"
+                href="/admin/inventory/list"
                 current={pathname?.startsWith("/admin/inventory")}
               >
                 <ShoppingBasket
@@ -326,14 +313,14 @@ export default function SideBarAccount({ user, tenant }: Props) {
                     "h-5 "
                   )}
                 />
-                <SidebarLabel>Inventory</SidebarLabel>
+                <SidebarLabel>Stock</SidebarLabel>
               </SidebarItem>
 
               <SidebarItem
-                href="/admin/treatments"
+                href="/admin/treatments/list"
                 current={pathname?.startsWith("/admin/treatments")}
               >
-                <Stethoscope
+                <HeartPulseIcon
                   className={cn(
                     pathname?.startsWith("/admin/treatments")
                       ? "text-black "
@@ -341,22 +328,7 @@ export default function SideBarAccount({ user, tenant }: Props) {
                     "h-5 "
                   )}
                 />
-                <SidebarLabel>Treatments</SidebarLabel>
-              </SidebarItem>
-
-              <SidebarItem
-                href="/admin/procedures/list"
-                current={pathname?.startsWith("/admin/procedures/list")}
-              >
-                <Brain
-                  className={cn(
-                    pathname?.startsWith("/admin/procedures/list")
-                      ? "text-black "
-                      : "text-gray-500",
-                    "h-5 "
-                  )}
-                />
-                <SidebarLabel>Procedures</SidebarLabel>
+                <SidebarLabel>Patient's care</SidebarLabel>
               </SidebarItem>
             </SidebarSection>
 

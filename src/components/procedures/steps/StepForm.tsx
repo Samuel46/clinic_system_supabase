@@ -107,7 +107,7 @@ export default function StepForm({
   };
 
   return (
-    <FadeIn className=" space-y-6 pt-10">
+    <FadeIn className=" space-y-6">
       <DynamicBreadcrumb />
 
       <ProcedureSteps
@@ -117,7 +117,7 @@ export default function StepForm({
         currentSteps={Boolean(currentSteps.length)}
       />
 
-      <Heading className=" font-display ">
+      <Heading className=" font-display text-sm ">
         {edit && !Boolean(newInputs.length)
           ? "Update procedure step"
           : "Add procedure step"}
@@ -149,7 +149,7 @@ export default function StepForm({
           >
             {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             Continue
-            <ChevronRight className=" size-5" />
+            <ChevronRight className=" size-4" />
           </Button>
         </div>
       )}

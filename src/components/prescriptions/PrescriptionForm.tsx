@@ -118,6 +118,7 @@ export default function PrescriptionForm({
       if (result.success) {
         // Show success notification
         toast.success(result.msg);
+        router.back();
       } else {
         // Show error notification
         toast.error(result.msg);
@@ -132,18 +133,12 @@ export default function PrescriptionForm({
   };
 
   return (
-    <FadeIn className=" space-y-3 pt-10">
+    <FadeIn className=" space-y-6 ">
       <DynamicBreadcrumb />
-      <div className="flex w-full flex-wrap items-center justify-between gap-4  pb-6 dark:border-white/10">
-        <Heading className=" font-display pb-4">
-          {edit ? "Update inventory" : "Add inventory"}
+      <div className="flex w-full flex-wrap items-center justify-between gap-4   dark:border-white/10">
+        <Heading className=" font-display  text-sm">
+          {edit ? "Update prescription" : "Add prescription"}
         </Heading>
-        <div className="flex gap-4">
-          {/* <Button variant="outline" onClick={generatePermission}>
-            {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}Generate
-            Permissions
-          </Button> */}
-        </div>
       </div>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-6 w-full">
@@ -175,13 +170,9 @@ export default function PrescriptionForm({
             <RHFTextArea name="instructions" label="Instructions" />
           </div>
 
-          <Button
-            disabled={isLoading}
-            type="submit"
-            className=" py-6   font-bold font-display items-center place-self-start"
-          >
+          <Button disabled={isLoading} type="submit" className="place-self-start">
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-            {edit ? "Update inventory" : "Create inventory"}
+            {edit ? "Update prescription" : "Create prescription"}
           </Button>
         </div>
       </FormProvider>

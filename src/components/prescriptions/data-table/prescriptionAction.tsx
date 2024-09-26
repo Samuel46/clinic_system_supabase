@@ -34,7 +34,7 @@ export default function PrescriptionAction({ row }: { row: Row<PrescriptionColum
   const [isPending, startTransition] = useTransition();
 
   const handleEdit = async () => {
-    push(`prescriptions/${row.original.id}`);
+    push(`/admin/treatments/prescriptions/${row.original.id}`);
   };
 
   const handleDropdownMenu = () => {

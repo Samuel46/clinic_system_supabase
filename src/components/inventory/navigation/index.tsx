@@ -8,7 +8,7 @@ import {
   NavbarSection,
   NavbarSpacer,
 } from "@/components/navbar";
-import { PillBottle, ShoppingBasket, Syringe } from "lucide-react";
+import { Ambulance, PillBottle, ShoppingBasket, Syringe } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from "react";
 
@@ -48,7 +48,7 @@ export default function InventoryNavigation() {
           href="/admin/inventory/supplies"
           current={isSubPathActive(pathname, "supplies")}
         >
-          <Syringe className="h-4" /> Supplies
+          <Ambulance className="h-4" /> Supplies
         </NavbarItem>
       </NavbarSection>
       <NavbarSpacer />

@@ -81,8 +81,7 @@ export default function TreatmentList<TData, TValue>({
   });
 
   return (
-    <div className=" space-y-6">
-      <DynamicBreadcrumb />
+    <div className="space-y-6">
       <div className="flex items-center bg-muted/70 p-8 py-10 rounded-2xl">
         <DataTableToolbar
           filterableColumns={filterableColumns}

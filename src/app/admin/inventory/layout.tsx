@@ -1,5 +1,4 @@
 import { InventoryNavigation } from "@/components/inventory";
-
 import React from "react";
 
 export default async function InventoryLayout({
@@ -8,7 +7,7 @@ export default async function InventoryLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className=" space-y-6">
+    <div className="space-y-6">
       <InventoryNavigation />
 
       {children}

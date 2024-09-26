@@ -38,8 +38,6 @@ import { DataTableViewOptions } from "@ui/table/DataTableViewOptions";
 import { FilterableColumn } from "@type/index";
 import { FadeIn } from "@/components/FadeIn";
 
-import DynamicBreadcrumb from "@ui/dynamic-breadcrumb";
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -82,7 +80,6 @@ export default function ProcedureList<TData, TValue>({
 
   return (
     <FadeIn className=" space-y-6">
-      <DynamicBreadcrumb />
       <div className="flex items-center bg-muted/70 p-8 py-10 rounded-2xl">
         <DataTableToolbar
           filterableColumns={filterableColumns}

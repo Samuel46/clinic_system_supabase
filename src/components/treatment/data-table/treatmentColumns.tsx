@@ -14,7 +14,7 @@ export const treatmentColumns: ColumnDef<TreatmentColumns>[] = [
       <DataTableColumnHeader column={column} title="Treatment Name" />
     ),
     cell: ({ row }) => (
-      <p className="min-w-[150px] truncate text-balance whitespace-nowrap py-4  pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+      <p className="min-w-[150px] truncate text-balance font-medium text-gray-900 sm:pl-0">
         {row.getValue("name")}
       </p>
     ),
@@ -23,7 +23,7 @@ export const treatmentColumns: ColumnDef<TreatmentColumns>[] = [
     accessorKey: "description",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Description" />,
     cell: ({ row }) => (
-      <p className="max-w-[200px] truncate text-pretty whitespace-nowrap py-4 text-sm text-gray-600">
+      <p className="max-w-[200px] truncate text-pretty">
         {row.getValue("description") || "N/A"}
       </p>
     ),
@@ -32,24 +32,18 @@ export const treatmentColumns: ColumnDef<TreatmentColumns>[] = [
   {
     accessorKey: "type",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
-    cell: ({ row }) => (
-      <Badge className="max-w-[150px] ">{row.getValue("type") || "N/A"}</Badge>
-    ),
+    cell: ({ row }) => <Badge>{row.getValue("type") || "N/A"}</Badge>,
   },
   {
     accessorKey: "doctor",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Created by" />,
-    cell: ({ row }) => (
-      <p className="whitespace-nowrap  py-4 text-sm text-gray-600">
-        {row.getValue("doctor")}{" "}
-      </p>
-    ),
+    cell: ({ row }) => <p>{row.getValue("doctor")} </p>,
   },
   {
     accessorKey: "procedure",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Procedure" />,
     cell: ({ row }) => (
-      <p className="max-w-[150px] truncate text-pretty whitespace-nowrap  py-4 text-sm text-gray-600">
+      <p className="max-w-[150px] truncate text-pretty   ">
         {row.getValue("procedure") || "N/A"}
       </p>
     ),
@@ -57,20 +51,12 @@ export const treatmentColumns: ColumnDef<TreatmentColumns>[] = [
   {
     accessorKey: "createdAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Created At" />,
-    cell: ({ row }) => (
-      <p className="whitespace-nowrap  py-4 text-sm text-gray-600">
-        {fDate(row.getValue("createdAt"))}
-      </p>
-    ),
+    cell: ({ row }) => <p>{fDate(row.getValue("createdAt"))}</p>,
   },
   {
     accessorKey: "updatedAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Updated At" />,
-    cell: ({ row }) => (
-      <p className="whitespace-nowrap  py-4 text-sm text-gray-600">
-        {fDate(row.getValue("updatedAt"))}
-      </p>
-    ),
+    cell: ({ row }) => <p>{fDate(row.getValue("updatedAt"))}</p>,
   },
 
   {

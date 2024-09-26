@@ -8,12 +8,12 @@ export default function Index() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === "/admin/procedures") {
-      router.push("/admin/procedures/list");
+    if (pathname === "/admin/treatments/procedures") {
+      router.push("/admin/treatments/procedures/list");
     }
-    router.prefetch("/admin/procedures/list");
+    router.prefetch("/admin/treatments/procedures/list");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname, router]);
 
   return null;
 }

@@ -75,12 +75,12 @@ export default function AddProcedureForm({ procedures, currentTreatment, user }:
   };
 
   return (
-    <div className=" space-y-6 pt-10 grid">
+    <div className="space-y-6 grid">
       <DynamicBreadcrumb />
 
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <div className="flex w-full flex-wrap items-center justify-between gap-4  border-zinc-950/10 dark:border-white/10">
-          <Heading className=" font-display pb-4">
+          <Heading className=" font-display text-sm">
             {currentTreatment?.procedure ? "Update procedure" : "Add procedure"}
           </Heading>
           <div className="flex gap-4">
@@ -107,7 +107,7 @@ export default function AddProcedureForm({ procedures, currentTreatment, user }:
               disabled={isLoading}
               type="submit"
               variant={!currentTreatment?.procedure ? "default" : "secondary"}
-              className=" p-6  font-bold place-self-start"
+              className="place-self-start"
             >
               {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
               {currentTreatment?.procedure ? "Update procedure" : "Add procedure"}
@@ -126,11 +126,11 @@ export default function AddProcedureForm({ procedures, currentTreatment, user }:
               router.push(`/admin/treatments/add-equipments?id=${currentTreatment.id}`)
             )
           }
-          className=" p-6  font-bold  place-self-end items-center"
+          className="items-center  place-self-end"
         >
           {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Continue
-          <ChevronRight className=" size-5" />
+          <ChevronRight className="size-4" />
         </Button>
       )}
       {!currentTreatment?.procedure && !watch("procedureId") && (
@@ -141,11 +141,11 @@ export default function AddProcedureForm({ procedures, currentTreatment, user }:
               router.push(`/admin/treatments/add-equipments?id=${currentTreatment?.id}`)
             )
           }
-          className=" p-6  font-bold  place-self-end items-center"
+          className="place-self-end "
         >
           {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Skip
-          <ChevronRight className=" size-5" />
+          <ChevronRight className=" size-4" />
         </Button>
       )}
     </div>

@@ -37,11 +37,11 @@ export default function ProcedureAction({ row }: { row: Row<ProcedureColumns> })
   const [isPending, startTransition] = useTransition();
 
   const handleEdit = async () => {
-    push(`/admin/procedures/edit?id=${row.original.id}`);
+    push(`/admin/treatments/procedures/edit?id=${row.original.id}`);
   };
 
   const handleView = async () => {
-    push(`procedures/${row.original.id}`);
+    push(`/admin/treatments/procedures/procedures/${row.original.id}`);
   };
 
   const handleDropdownMenu = () => {

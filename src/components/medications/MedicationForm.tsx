@@ -105,25 +105,14 @@ export default function MedicationForm({ edit, currentMedication, user }: Props)
       router.refresh();
     }
   };
-  // const generateMedications = async () => {
-  //   await createMedicationSampleAction();
-  // };
 
   return (
-    <FadeIn className=" space-y-3 pt-10">
+    <FadeIn className=" space-y-6">
       <DynamicBreadcrumb />
-      <div className="flex w-full flex-wrap items-center justify-between gap-4  pb-6 dark:border-white/10">
-        <Heading className=" font-display pb-4">
+      <div className="flex w-full flex-wrap items-center justify-between gap-4 dark:border-white/10">
+        <Heading className=" font-display">
           {edit ? "Update medication" : "Add medication"}
         </Heading>
-        {/* {user?.role === "ADMIN" && (
-          <div className="flex gap-4">
-            <Button variant="outline" onClick={generateMedications}>
-              {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-              Generate Medications
-            </Button>
-          </div>
-        )} */}
       </div>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-6 w-full">
@@ -147,7 +136,7 @@ export default function MedicationForm({ edit, currentMedication, user }: Props)
           <Button
             disabled={isLoading}
             type="submit"
-            className=" py-6   font-bold font-display items-center place-self-start"
+            className="items-center place-self-start"
           >
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             {edit ? "Update medication" : "Create medication"}
