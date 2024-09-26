@@ -15,14 +15,14 @@ export const billingColumns: ColumnDef<BillingColumns>[] = [
   {
     accessorKey: "patientName",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Patient" />,
-    cell: ({ row }) => <div className="font-medium">{row.getValue("patientName")}</div>,
+    cell: ({ row }) => (
+      <p className="font-medium  text-gray-900 ">{row.getValue("patientName")}</p>
+    ),
   },
   {
     accessorKey: "amount",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Amount" />,
-    cell: ({ row }) => (
-      <div className="font-medium">{formatAmountKsh(row.getValue("amount"))}</div>
-    ),
+    cell: ({ row }) => <p>{formatAmountKsh(row.getValue("amount"))}</p>,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
@@ -30,7 +30,7 @@ export const billingColumns: ColumnDef<BillingColumns>[] = [
   {
     accessorKey: "staff",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Staff" />,
-    cell: ({ row }) => <div className="font-medium">{row.getValue("staff")}</div>,
+    cell: ({ row }) => <p>{row.getValue("staff")}</p>,
   },
   {
     accessorKey: "status",
@@ -43,14 +43,7 @@ export const billingColumns: ColumnDef<BillingColumns>[] = [
           : status === BillingStatus.PAID
           ? "green"
           : "sky";
-      return (
-        <Badge
-          className="max-w-[250px] truncate font-medium text-pretty"
-          color={statusColor}
-        >
-          {status}
-        </Badge>
-      );
+      return <Badge color={statusColor}>{status}</Badge>;
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -61,7 +54,7 @@ export const billingColumns: ColumnDef<BillingColumns>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Payment Method" />
     ),
-    cell: ({ row }) => <div className="font-medium">{row.getValue("paymentMethod")}</div>,
+    cell: ({ row }) => <p>{row.getValue("paymentMethod")}</p>,
 
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -70,16 +63,12 @@ export const billingColumns: ColumnDef<BillingColumns>[] = [
   {
     accessorKey: "createdAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Created At" />,
-    cell: ({ row }) => (
-      <div className="font-medium">{fDate(new Date(row.getValue("createdAt")))}</div>
-    ),
+    cell: ({ row }) => <div>{fDate(new Date(row.getValue("createdAt")))}</div>,
   },
   {
     accessorKey: "updatedAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Updated At" />,
-    cell: ({ row }) => (
-      <div className="font-medium">{fDate(new Date(row.getValue("updatedAt")))}</div>
-    ),
+    cell: ({ row }) => <div>{fDate(new Date(row.getValue("updatedAt")))}</div>,
   },
   {
     id: "actions",

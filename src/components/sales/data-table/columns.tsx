@@ -22,7 +22,9 @@ export const saleColumns: ColumnDef<SaleColumns>[] = [
     accessorKey: "userName",
     header: ({ column }) => <DataTableColumnHeader column={column} title="User" />,
     cell: ({ row }) => (
-      <p className="max-w-[150px] truncate ">{row.getValue("userName")}</p>
+      <p className="max-w-[150px] truncate  font-medium text-gray-900">
+        {row.getValue("userName")}
+      </p>
     ),
 
     filterFn: (row, id, value) => {
@@ -44,7 +46,11 @@ export const saleColumns: ColumnDef<SaleColumns>[] = [
     cell: ({ row }) => {
       const amount: number = row.getValue("totalAmount") as number;
 
-      return <p className="max-w-[150px] truncate  text-sm">{formatAmountKsh(amount)}</p>;
+      return (
+        <p className="max-w-[150px] truncate font-medium text-gray-900">
+          {formatAmountKsh(amount)}
+        </p>
+      );
     },
   },
   {
@@ -53,7 +59,7 @@ export const saleColumns: ColumnDef<SaleColumns>[] = [
       <DataTableColumnHeader column={column} title="Payment Method" />
     ),
     cell: ({ row }) => (
-      <p className="max-w-[150px] truncate ">{row.getValue("paymentMethod")}</p>
+      <p className="max-w-[150px] truncate  ">{row.getValue("paymentMethod")}</p>
     ),
 
     filterFn: (row, id, value) => {
@@ -74,7 +80,7 @@ export const saleColumns: ColumnDef<SaleColumns>[] = [
           ? "green"
           : "red";
       return (
-        <Badge className="max-w-[250px] truncate text-sm text-pretty" color={statusColor}>
+        <Badge className="max-w-[250px] truncate  text-pretty" color={statusColor}>
           {status}
         </Badge>
       );
@@ -88,7 +94,7 @@ export const saleColumns: ColumnDef<SaleColumns>[] = [
     accessorKey: "createdAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Created At" />,
     cell: ({ row }) => (
-      <p className="max-w-[150px] truncate text-sm">
+      <p className="max-w-[150px] truncate ">
         {fDate(new Date(row.getValue("createdAt")))}
       </p>
     ),
@@ -97,7 +103,7 @@ export const saleColumns: ColumnDef<SaleColumns>[] = [
     accessorKey: "updatedAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Updated At" />,
     cell: ({ row }) => (
-      <p className="max-w-[150px] truncate text-sm">
+      <p className="max-w-[150px] truncate ">
         {fDate(new Date(row.getValue("updatedAt")))}
       </p>
     ),

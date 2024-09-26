@@ -13,16 +13,14 @@ export const supplyColumns: ColumnDef<SupplyColumns>[] = [
     accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
     cell: ({ row }) => (
-      <p className="font-medium min-w-[150px] w-full">{row.getValue("name")}</p>
+      <p className="font-medium min-w-[150px]  text-gray-900">{row.getValue("name")}</p>
     ),
   },
   {
     accessorKey: "description",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Description" />,
     cell: ({ row }) => (
-      <p className="max-w-[200px] font-medium truncate text-pretty">
-        {row.getValue("description")}
-      </p>
+      <p className="max-w-[200px]  truncate text-pretty">{row.getValue("description")}</p>
     ),
     filterFn: (row, id, value) => value.includes(row.getValue(id)),
   },

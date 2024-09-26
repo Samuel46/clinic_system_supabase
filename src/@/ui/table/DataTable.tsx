@@ -64,7 +64,7 @@ export default function DataTable<TData, TValue>({
                             e.stopPropagation();
                           }
                         }}
-                        className={!isLastCell ? "cursor-pointer" : ""}
+                        className={!isLastCell ? "cursor-pointer " : ""}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
