@@ -42,7 +42,7 @@ export const columns: ColumnDef<Tenant>[] = [
     accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
     cell: ({ row }) => (
-      <p className="max-w-[500px] w-[150px] truncate font-medium">
+      <p className="max-w-[500px]  text-gray-900 truncate font-medium    ">
         {row.getValue("name")}
       </p>
     ),
@@ -53,9 +53,7 @@ export const columns: ColumnDef<Tenant>[] = [
       <DataTableColumnHeader column={column} title="Contact Phone" />
     ),
     cell: ({ row }) => (
-      <p className="max-w-[250px] truncate font-medium text-pretty">
-        {row.getValue("contactPhone")}
-      </p>
+      <p className=" truncate text-pretty">{row.getValue("contactPhone")}</p>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -65,9 +63,7 @@ export const columns: ColumnDef<Tenant>[] = [
     accessorKey: "address",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Address" />,
     cell: ({ row }) => (
-      <p className="max-w-[250px] truncate font-medium text-pretty">
-        {row.getValue("address")}
-      </p>
+      <p className="max-w-[150px] truncate     text-pretty">{row.getValue("address")}</p>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -79,7 +75,7 @@ export const columns: ColumnDef<Tenant>[] = [
       <DataTableColumnHeader column={column} title="Contact Email" />
     ),
     cell: ({ row }) => (
-      <p className="max-w-[250px] truncate font-medium text-pretty ">
+      <p className="max-w-[150px] truncate  text-pretty ">
         {row.getValue("contactEmail")}
       </p>
     ),

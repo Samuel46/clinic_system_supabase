@@ -12,12 +12,14 @@ export const medicationColumns: ColumnDef<MedicationColumns>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
-    cell: ({ row }) => <div>{row.getValue("name")}</div>,
+    cell: ({ row }) => (
+      <p className="font-medium text-gray-900">{row.getValue("name")}</p>
+    ),
   },
   {
     accessorKey: "tenantName",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Tenant" />,
-    cell: ({ row }) => <div>{row.getValue("tenantName")}</div>,
+    cell: ({ row }) => <p>{row.getValue("tenantName")}</p>,
 
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -27,9 +29,7 @@ export const medicationColumns: ColumnDef<MedicationColumns>[] = [
     accessorKey: "description",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Description" />,
     cell: ({ row }) => (
-      <p className="max-w-[350px] truncate font-medium text-pretty">
-        {row.getValue("description")}
-      </p>
+      <p className="max-w-[350px] truncate  text-pretty">{row.getValue("description")}</p>
     ),
   },
   {
@@ -52,7 +52,7 @@ export const medicationColumns: ColumnDef<MedicationColumns>[] = [
     accessorKey: "createdAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Created At" />,
     cell: ({ row }) => (
-      <p className="max-w-[250px] truncate font-medium text-pretty">
+      <p className="max-w-[150px] truncate  text-pretty">
         {fDate(new Date(row.getValue("createdAt")))}
       </p>
     ),
@@ -61,7 +61,7 @@ export const medicationColumns: ColumnDef<MedicationColumns>[] = [
     accessorKey: "updatedAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Updated At" />,
     cell: ({ row }) => (
-      <p className="max-w-[250px] truncate font-medium text-pretty">
+      <p className="max-w-[150px] truncate  text-pretty">
         {fDate(new Date(row.getValue("updatedAt")))}
       </p>
     ),

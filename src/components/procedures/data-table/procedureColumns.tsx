@@ -13,14 +13,14 @@ export const procedureColumns: ColumnDef<ProcedureColumns>[] = [
       <DataTableColumnHeader column={column} title="Procedure Name" />
     ),
     cell: ({ row }) => (
-      <p className="font-medium min-w-[150px] w-full">{row.getValue("name")}</p>
+      <p className="font-medium text-gray-900   min-w-[150px]">{row.getValue("name")}</p>
     ),
   },
   {
     accessorKey: "description",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Description" />,
     cell: ({ row }) => (
-      <p className="max-w-[200px] font-medium truncate text-pretty">
+      <p className="max-w-[200px]  truncate text-pretty">
         {row.getValue("description") || "N/A"}
       </p>
     ),
@@ -45,7 +45,7 @@ export const procedureColumns: ColumnDef<ProcedureColumns>[] = [
   {
     accessorKey: "updatedAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Updated At" />,
-    cell: ({ row }) => <p>{fDate(row.getValue("updatedAt"))}</p>,
+    cell: ({ row }) => <p className=" ">{fDate(row.getValue("updatedAt"))}</p>,
   },
 
   {

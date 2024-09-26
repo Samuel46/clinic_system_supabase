@@ -13,7 +13,7 @@ export const invitationColumns: ColumnDef<InvitationColumns>[] = [
     accessorKey: "email",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
     cell: ({ row }) => (
-      <p className="max-w-[250px] truncate font-medium text-pretty">
+      <p className="max-w-[250px] truncate font-medium text-gray-900  text-pretty">
         {row.getValue("email")}
       </p>
     ),
@@ -22,9 +22,7 @@ export const invitationColumns: ColumnDef<InvitationColumns>[] = [
     accessorKey: "tenantName",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Tenant" />,
     cell: ({ row }) => (
-      <p className="max-w-[500px] w-[150px] truncate font-medium">
-        {row.getValue("tenantName")}
-      </p>
+      <p className="max-w-[500px] w-[150px] truncate">{row.getValue("tenantName")}</p>
     ),
 
     filterFn: (row, id, value) => {
@@ -35,9 +33,7 @@ export const invitationColumns: ColumnDef<InvitationColumns>[] = [
     accessorKey: "roleName",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Role" />,
     cell: ({ row }) => (
-      <p className="max-w-[250px] truncate font-medium text-pretty">
-        {row.getValue("roleName")}
-      </p>
+      <p className="max-w-[150px] truncate  text-pretty">{row.getValue("roleName")}</p>
     ),
 
     filterFn: (row, id, value) => {
@@ -66,10 +62,7 @@ export const invitationColumns: ColumnDef<InvitationColumns>[] = [
       };
 
       return (
-        <Badge
-          className="max-w-[250px] truncate font-medium text-pretty"
-          color={statusColor(status)}
-        >
+        <Badge className=" truncate text-pretty" color={statusColor(status)}>
           {status}
         </Badge>
       );
@@ -83,7 +76,7 @@ export const invitationColumns: ColumnDef<InvitationColumns>[] = [
     accessorKey: "expiresAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Expires At" />,
     cell: ({ row }) => (
-      <Badge color="red" className="max-w-[250px] truncate font-medium text-pretty ">
+      <Badge color="red" className="max-w-[q50px] truncate text-pretty ">
         {fDateTime(row.getValue("expiresAt"))}
       </Badge>
     ),
@@ -96,7 +89,7 @@ export const invitationColumns: ColumnDef<InvitationColumns>[] = [
     accessorKey: "createdAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Created At" />,
     cell: ({ row }) => (
-      <Badge color="lime" className="max-w-[250px] truncate font-medium text-pretty">
+      <Badge color="lime" className=" truncate text-pretty">
         {fDateTime(row.getValue("createdAt"))}
       </Badge>
     ),

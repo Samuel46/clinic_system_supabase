@@ -10,7 +10,7 @@ export const inventoryColumns: ColumnDef<InventoryColumns>[] = [
     accessorKey: "medicationName",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Medication" />,
     cell: ({ row }) => (
-      <p className="max-w-[350px] truncate font-medium text-pretty">
+      <p className="max-w-[350px] truncate font-medium text-gray-900 ">
         {row.getValue("medicationName")}
       </p>
     ),
@@ -19,9 +19,7 @@ export const inventoryColumns: ColumnDef<InventoryColumns>[] = [
     accessorKey: "tenantName",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Tenant" />,
     cell: ({ row }) => (
-      <p className="max-w-[350px] truncate font-medium text-pretty">
-        {row.getValue("tenantName")}
-      </p>
+      <p className="max-w-[350px] truncate text-pretty">{row.getValue("tenantName")}</p>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -30,7 +28,7 @@ export const inventoryColumns: ColumnDef<InventoryColumns>[] = [
   {
     accessorKey: "quantity",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Quantity" />,
-    cell: ({ row }) => <div>{row.getValue("quantity")}</div>,
+    cell: ({ row }) => <p>{row.getValue("quantity")}</p>,
 
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -39,7 +37,7 @@ export const inventoryColumns: ColumnDef<InventoryColumns>[] = [
   {
     accessorKey: "threshold",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Threshold" />,
-    cell: ({ row }) => <div>{row.getValue("threshold")}</div>,
+    cell: ({ row }) => <p>{row.getValue("threshold")}</p>,
 
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -51,15 +49,15 @@ export const inventoryColumns: ColumnDef<InventoryColumns>[] = [
       <DataTableColumnHeader column={column} title="Expiration Date" />
     ),
     cell: ({ row }) => (
-      <div>
+      <p>
         {row.getValue("expirationDate") ? fDate(row.getValue("expirationDate")) : "N/A"}
-      </div>
+      </p>
     ),
   },
   {
     accessorKey: "location",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Location" />,
-    cell: ({ row }) => <div>{row.getValue("location") || "N/A"}</div>,
+    cell: ({ row }) => <p>{row.getValue("location") || "N/A"}</p>,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
@@ -67,7 +65,7 @@ export const inventoryColumns: ColumnDef<InventoryColumns>[] = [
   {
     accessorKey: "createdAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Created At" />,
-    cell: ({ row }) => <div>{fDate(row.getValue("createdAt"))}</div>,
+    cell: ({ row }) => <p>{fDate(row.getValue("createdAt"))}</p>,
   },
   // {
   //   accessorKey: "updatedAt",

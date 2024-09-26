@@ -14,7 +14,9 @@ export const roleColumns: ColumnDef<Role>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Role Name" />,
-    cell: ({ row }) => <div>{row.getValue("name")}</div>,
+    cell: ({ row }) => (
+      <p className=" font-medium text-gray-900">{row.getValue("name")}</p>
+    ),
   },
   {
     accessorKey: "description",

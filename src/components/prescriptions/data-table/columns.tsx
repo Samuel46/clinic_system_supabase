@@ -15,7 +15,7 @@ export const prescriptionColumns: ColumnDef<PrescriptionColumns>[] = [
     accessorKey: "patientName",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Patient" />,
     cell: ({ row }) => (
-      <p className="max-w-[250px] truncate font-medium text-pretty">
+      <p className="max-w-[250px] truncate font-medium text-gray-900  text-pretty">
         {row.getValue("patientName")}
       </p>
     ),
@@ -24,9 +24,7 @@ export const prescriptionColumns: ColumnDef<PrescriptionColumns>[] = [
     accessorKey: "doctorName",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Doctor" />,
     cell: ({ row }) => (
-      <p className="max-w-[250px] truncate font-medium text-pretty">
-        {row.getValue("doctorName")}
-      </p>
+      <p className="truncate text-pretty">{row.getValue("doctorName")}</p>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -36,7 +34,7 @@ export const prescriptionColumns: ColumnDef<PrescriptionColumns>[] = [
     accessorKey: "medicationName",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Medication" />,
     cell: ({ row }) => (
-      <p className="max-w-[250px] truncate font-medium text-pretty">
+      <p className="max-w-[150px] truncate text-pretty text-gray-900">
         {row.getValue("medicationName")}
       </p>
     ),
@@ -47,7 +45,7 @@ export const prescriptionColumns: ColumnDef<PrescriptionColumns>[] = [
   {
     accessorKey: "dosage",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Dosage" />,
-    cell: ({ row }) => <div>{row.getValue("dosage")}</div>,
+    cell: ({ row }) => <p>{row.getValue("dosage")}</p>,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
@@ -55,7 +53,7 @@ export const prescriptionColumns: ColumnDef<PrescriptionColumns>[] = [
   {
     accessorKey: "frequency",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Frequency" />,
-    cell: ({ row }) => <div>{row.getValue("frequency")}</div>,
+    cell: ({ row }) => <p>{row.getValue("frequency")}</p>,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
@@ -64,9 +62,7 @@ export const prescriptionColumns: ColumnDef<PrescriptionColumns>[] = [
     accessorKey: "duration",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Duration" />,
     cell: ({ row }) => (
-      <p className="max-w-[250px] truncate font-medium text-pretty">
-        {row.getValue("duration")}
-      </p>
+      <p className=" truncate  text-pretty">{row.getValue("duration")}</p>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -76,7 +72,7 @@ export const prescriptionColumns: ColumnDef<PrescriptionColumns>[] = [
   {
     accessorKey: "createdAt",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Created At" />,
-    cell: ({ row }) => <div>{fDate(row.getValue("createdAt"))}</div>,
+    cell: ({ row }) => <p className="">{fDate(row.getValue("createdAt"))}</p>,
   },
   // {
   //   accessorKey: "updatedAt",

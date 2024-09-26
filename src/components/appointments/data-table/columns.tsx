@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@ui/table/DataTableColumnHeade";
 import { format } from "date-fns";
-import { Appointment, AppointmentStatus } from "@prisma/client";
+import { AppointmentStatus } from "@prisma/client";
 
 import AppointmentAction from "./appointmentAction";
 import { AppointmentDataTable } from "@type/index";
@@ -17,7 +17,7 @@ export const appointmentColumns: ColumnDef<AppointmentDataTable>[] = [
     cell: ({ row }) => {
       const date: Date = row.getValue("date");
       return (
-        <p className="max-w-[150px] truncate font-medium text-pretty">
+        <p className="max-w-[150px] truncate  font-medium text-gray-900">
           {format(date, "PPP")}
         </p>
       );
@@ -28,7 +28,7 @@ export const appointmentColumns: ColumnDef<AppointmentDataTable>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Time" />,
     cell: ({ row }) => {
       const time: string = row.getValue("time");
-      return <p className="max-w-[250px] truncate font-medium text-pretty">{time}</p>;
+      return <p className="max-w-[150px] truncate  text-pretty">{time}</p>;
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -40,9 +40,7 @@ export const appointmentColumns: ColumnDef<AppointmentDataTable>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Patient" />,
     cell: ({ row }) => {
       const patientName: string = row.getValue("patient");
-      return (
-        <p className="max-w-[150px] truncate font-medium text-pretty">{patientName}</p>
-      );
+      return <p className="max-w-[150px] truncate text-pretty ">{patientName}</p>;
     },
   },
   {
@@ -52,7 +50,7 @@ export const appointmentColumns: ColumnDef<AppointmentDataTable>[] = [
       const doctorName: string = row.getValue("doctor");
       return (
         <Link href={`/edit/${row.original.id}`}>
-          <p className="max-w-[150px] truncate font-medium text-pretty">{doctorName}</p>
+          <p className="max-w-[150px] truncate text-pretty ">{doctorName}</p>
         </Link>
       );
     },
@@ -79,14 +77,7 @@ export const appointmentColumns: ColumnDef<AppointmentDataTable>[] = [
           : status === AppointmentStatus.COMPLETED
           ? "green"
           : "red";
-      return (
-        <Badge
-          className="max-w-[250px] truncate font-medium text-pretty"
-          color={statusColor}
-        >
-          {status}
-        </Badge>
-      );
+      return <Badge color={statusColor}>{status}</Badge>;
     },
 
     filterFn: (row, id, value) => {
