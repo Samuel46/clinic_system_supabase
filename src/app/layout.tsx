@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full text-sm font-display antialiased">
+    <html lang="en" className="h-full text-base font-display antialiased">
       <head>
         <meta
           name="viewport"

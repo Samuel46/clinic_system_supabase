@@ -3,7 +3,6 @@ import type React from "react";
 
 import { getCurrentUser } from "@lib/session";
 
-import { User } from "@prisma/client";
 import { ApplicationLayout } from "@/components/layout/Admin";
 import { SessionUser } from "@type/index";
 import prisma_next from "@lib/db";
@@ -37,6 +36,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
       className=" text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950"
     >
+      <head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+      </head>
       <body>
         <ApplicationLayout user={user} tenant={tenant}>
           {children}
