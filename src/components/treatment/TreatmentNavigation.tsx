@@ -24,8 +24,8 @@ export default function TreatmentNavigation() {
   return (
     <Navbar className="border rounded-lg px-6">
       <NavbarLabel className="flex items-center gap-x-1 text-gray-900">
-        <HeartPulse className="size-4 animate-pulse" />
-        Patient's care
+        <HeartPulse className="size-4" />
+        Patient&apos;s care
       </NavbarLabel>
       <NavbarDivider className="max-lg:hidden" />
       <NavbarSection className="max-lg:hidden">

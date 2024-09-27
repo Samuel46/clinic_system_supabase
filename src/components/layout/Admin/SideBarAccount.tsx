@@ -31,21 +31,13 @@ import AccountDropdownMenu from "./AccountDropdownMenu";
 import { Tenant } from "@prisma/client";
 import { Dropdown, DropdownButton } from "@/components/dropdown";
 
-import {
-  Activity,
-  Brain,
-  HeartPulseIcon,
-  Percent,
-  ShoppingBasket,
-  Stethoscope,
-  Syringe,
-  Tablets,
-} from "lucide-react";
+import { Activity, HeartPulseIcon, Percent, ShoppingBasket } from "lucide-react";
 import { cn } from "@lib/utils";
 import { Icons } from "@ui/icons";
 import { SessionUser } from "@type/index";
 import { getInitials } from "@utils/index";
-import { Divider } from "@/components/divider";
+
+import { GradientBackground } from "@ui/gradient";
 
 type Props = {
   user?: SessionUser;
@@ -328,7 +320,7 @@ export default function SideBarAccount({ user, tenant }: Props) {
                     "h-5 "
                   )}
                 />
-                <SidebarLabel>Patient's care</SidebarLabel>
+                <SidebarLabel>Patient&apos;s care</SidebarLabel>
               </SidebarItem>
             </SidebarSection>
 
