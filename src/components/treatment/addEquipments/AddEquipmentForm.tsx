@@ -145,10 +145,10 @@ export default function AddEquipmentForm({ currentTreatment, equipments, edit }:
   };
 
   return (
-    <div className=" space-y-6 pt-10">
+    <div className=" space-y-6">
       <DynamicBreadcrumb />
 
-      <Heading className=" font-display ">
+      <Heading className=" font-display text-sm ">
         {edit && !Boolean(newInputs.length)
           ? "Update treatment equipment"
           : "Add treatment equipment"}
@@ -163,7 +163,7 @@ export default function AddEquipmentForm({ currentTreatment, equipments, edit }:
               disabled={isLoading}
               type="submit"
               variant={edit && !Boolean(newInputs.length) ? "secondary" : "default"}
-              className=" py-6    items-center place-self-end"
+              className="place-self-end"
             >
               {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
               {edit && !Boolean(newInputs.length)
@@ -177,13 +177,12 @@ export default function AddEquipmentForm({ currentTreatment, equipments, edit }:
         <div className="flex  flex-col space-y-6  items-end">
           <Divider />
           <Button
-            className=" font-semibold p-6"
             type="submit"
             onClick={() => startTransition(() => router.push(`/admin/treatments`))}
           >
             {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             Finish
-            <ChevronRight className=" size-5" />
+            <ChevronRight className=" size-4" />
           </Button>
         </div>
       )}
@@ -192,13 +191,12 @@ export default function AddEquipmentForm({ currentTreatment, equipments, edit }:
         <div className="flex  flex-col space-y-6  items-end">
           <Divider />
           <Button
-            className=" font-semibold p-6"
             type="submit"
             onClick={() => startTransition(() => router.push(`/admin/treatments`))}
           >
             {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             Skip
-            <ChevronRight className=" size-5" />
+            <ChevronRight className=" size-4" />
           </Button>
         </div>
       )}

@@ -33,7 +33,7 @@ const DynamicBreadcrumb: React.FC = () => {
   const breadcrumbItems = generateBreadcrumbItems(pathname);
 
   return (
-    <Breadcrumb className="hidden md:flex py-4">
+    <Breadcrumb className="hidden md:flex ">
       <BreadcrumbList>
         {/* Dynamic Breadcrumb Items */}
         {breadcrumbItems.map((item, index) => (

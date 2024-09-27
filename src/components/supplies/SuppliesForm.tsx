@@ -95,12 +95,13 @@ export default function SuppliesForm({ edit, currentComponent, user }: Props) {
     }
   };
   return (
-    <FadeIn className=" space-y-3 pt-10">
+    <FadeIn className="space-y-6">
       <DynamicBreadcrumb />
 
-      <Heading className=" font-display pb-4">
+      <Heading className="font-display text-sm ">
         {edit ? "Update supply" : "Add supply"}
       </Heading>
+
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-6  ">
           <div className="grid  grid-cols-2 gap-x-4">
@@ -124,11 +125,7 @@ export default function SuppliesForm({ edit, currentComponent, user }: Props) {
             placeholder="Enter component description"
           />
 
-          <Button
-            disabled={isLoading}
-            type="submit"
-            className=" py-6 flex  items-center place-self-start"
-          >
+          <Button disabled={isLoading} type="submit" className="place-self-start">
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             {edit ? "Update supply" : "Create supply"}
           </Button>

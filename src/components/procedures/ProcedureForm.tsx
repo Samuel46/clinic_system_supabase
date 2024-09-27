@@ -75,7 +75,10 @@ export default function ProcedureForm({ currentProcedure, user, edit }: Props) {
       }
 
       if (result.success) {
-        router.push(`/admin/procedures/create?id=${result.data?.id}`);
+        if (!edit) {
+          router.push(`/admin/treatments/procedures/create?id=${result.data?.id}`);
+        }
+
         toast.success(result.msg);
         reset();
       } else {
@@ -91,7 +94,7 @@ export default function ProcedureForm({ currentProcedure, user, edit }: Props) {
   };
 
   return (
-    <FadeIn className=" space-y-6 pt-10">
+    <FadeIn className=" space-y-6 ">
       <DynamicBreadcrumb />
       <ProcedureSteps
         id={currentProcedure?.id}
@@ -100,7 +103,7 @@ export default function ProcedureForm({ currentProcedure, user, edit }: Props) {
         currentSteps={Boolean(currentProcedure?.steps.length)}
       />
       <div className="flex w-full flex-wrap items-center justify-between gap-4   dark:border-white/10">
-        <Heading className=" font-display ">
+        <Heading className=" font-display text-sm ">
           {edit ? "Update procedure info" : "Add procedure info"}
         </Heading>
       </div>
@@ -116,7 +119,7 @@ export default function ProcedureForm({ currentProcedure, user, edit }: Props) {
             disabled={isLoading}
             type="submit"
             variant={edit && !Boolean(hasChanges) ? "secondary" : "default"}
-            className=" py-6   font-bold font-display items-center place-self-start"
+            className="place-self-start"
           >
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             {edit ? "Update procedure info" : "Continue"}
@@ -128,15 +131,14 @@ export default function ProcedureForm({ currentProcedure, user, edit }: Props) {
         <div className="flex  flex-col space-y-6  items-end">
           <Divider />
           <Button
-            className=" font-semibold p-6"
             type="submit"
             onClick={() =>
               startTransition(() => router.push(`steps?id=${currentProcedure?.id}`))
             }
           >
-            {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+            {isPending && <Icons.spinner className="mr-2 size-4 animate-spin" />}
             Continue
-            <ChevronRight className=" size-5" />
+            <ChevronRight className=" size-4" />
           </Button>
         </div>
       )}

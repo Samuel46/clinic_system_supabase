@@ -8,6 +8,7 @@ import { Button } from "@ui/button";
 
 import { DataTableFacetedFilter } from "./DataTableFacetedFilter";
 import { Input } from "@ui/input";
+import { GradientBackground } from "@ui/gradient";
 
 interface FilterOption {
   label: string;
@@ -31,7 +32,7 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between ">
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder={placeholderText}

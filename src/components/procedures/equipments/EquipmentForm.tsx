@@ -135,7 +135,7 @@ export default function EquipmentForm({
   };
 
   return (
-    <FadeIn className=" space-y-6 pt-10">
+    <FadeIn className=" space-y-6">
       <DynamicBreadcrumb />
 
       <ProcedureSteps
@@ -144,21 +144,21 @@ export default function EquipmentForm({
         currentEquipments={Boolean(currentEquipments.length)}
         currentSteps={Boolean(currentSteps.length)}
       />
-      <Heading className=" font-display ">
+      <Heading className=" font-display text-sm">
         {edit && !Boolean(newInputs.length)
           ? "Update procedure equipment"
           : "Add procedure equipment"}
       </Heading>
 
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid gap-6  ">
+        <div className="grid gap-6">
           <EquipmentItems equipments={currentEquipments ?? []} supplies={equipments} />
 
           <Button
             disabled={isLoading}
             type="submit"
             variant={edit && !Boolean(newInputs.length) ? "secondary" : "default"}
-            className=" py-6    items-center place-self-end"
+            className="place-self-end"
           >
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             {edit && !Boolean(newInputs.length)
@@ -168,16 +168,17 @@ export default function EquipmentForm({
         </div>
       </FormProvider>
       {edit && !Boolean(newInputs.length) && (
-        <div className="flex  flex-col space-y-6  items-end">
+        <div className="flex  flex-col space-y-6 items-end">
           <Divider />
           <Button
-            className=" font-semibold p-6"
             type="submit"
-            onClick={() => startTransition(() => router.push(`/admin/procedures`))}
+            onClick={() =>
+              startTransition(() => router.push(`/admin/treatments/procedures/list`))
+            }
           >
             {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             Finish
-            <ChevronRight className=" size-5" />
+            <ChevronRight className=" size-4" />
           </Button>
         </div>
       )}

@@ -48,6 +48,7 @@ import { transformAppointment } from "@utils/index";
 import { fDate, fDateTime } from "@utils/formatTime";
 import { useSession } from "next-auth/react";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
+import { Gradient } from "@ui/gradient";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -189,28 +190,30 @@ export default function AppointmentList<TData, TValue>({
   return (
     <FadeIn className=" space-y-6">
       <DynamicBreadcrumb />
-      <div className="flex items-center bg-muted/70 p-8 py-10 rounded-2xl">
-        <DataTableToolbar
-          filterableColumns={filterableColumns}
-          placeholderText="Filter patient..."
-          table={table}
-          filter="patient"
-        />
-        <div className="ml-auto flex items-center gap-2">
-          <DataTableViewOptions table={table} />
+      <Gradient className="relative rounded-2xl">
+        <div className=" isolate flex items-center bg-muted/70 p-8 py-10 inset-2 rounded-2xl">
+          <DataTableToolbar
+            filterableColumns={filterableColumns}
+            placeholderText="Filter patient..."
+            table={table}
+            filter="patient"
+          />
+          <div className="ml-auto flex items-center gap-2">
+            <DataTableViewOptions table={table} />
 
-          <Button
-            size="sm"
-            className="h-8 gap-1"
-            onClick={() => router.push("appointments/create")}
-          >
-            <PlusCircleIcon className="h-3.5 w-3.5" />
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              Add appointment
-            </span>
-          </Button>
+            <Button
+              size="sm"
+              className="h-8 gap-1"
+              onClick={() => router.push("appointments/create")}
+            >
+              <PlusCircleIcon className="h-3.5 w-3.5" />
+              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                Add appointment
+              </span>
+            </Button>
+          </div>
         </div>
-      </div>
+      </Gradient>
 
       <Card className=" rounded-2xl">
         <CardHeader>

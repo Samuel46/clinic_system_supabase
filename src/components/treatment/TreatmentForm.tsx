@@ -80,13 +80,14 @@ export default function TreatmentForm({ currentTreatment, user }: Props) {
   };
 
   return (
-    <div className=" space-y-6 pt-10 grid">
+    <div className=" space-y-6  grid">
       <DynamicBreadcrumb />
 
+      <Heading className=" font-display text-sm">
+        {currentTreatment ? "Update treatment info" : "Add treatment info"}
+      </Heading>
+
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-        <Heading className=" font-display pb-4">
-          {currentTreatment ? "Update treatment info" : "Add treatment info"}
-        </Heading>
         <div className="grid gap-6  ">
           <div className="grid gap-2 grid-cols-2 w-full">
             <RHFInput name="name" label="Treatment name" />
@@ -107,7 +108,7 @@ export default function TreatmentForm({ currentTreatment, user }: Props) {
             disabled={isLoading}
             type="submit"
             variant={!currentTreatment ? "default" : "secondary"}
-            className=" p-6  font-bold place-self-start"
+            className="place-self-start"
           >
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             {currentTreatment ? "Update treatment info" : "Create treatment info"}
@@ -121,10 +122,10 @@ export default function TreatmentForm({ currentTreatment, user }: Props) {
           type="submit"
           onClick={() =>
             startTransition(() =>
-              router.push(`/admin/treatments/add-procedures?id=${currentTreatment.id}`)
+              router.push(`/admin/treatments/add-operations?id=${currentTreatment.id}`)
             )
           }
-          className=" p-6  font-bold  place-self-end items-center"
+          className="place-self-end items-center"
         >
           {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Continue
