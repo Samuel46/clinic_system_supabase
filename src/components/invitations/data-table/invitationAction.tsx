@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { Fragment, useState, useTransition } from "react";
 
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { Button } from "@ui/button";
@@ -16,14 +16,13 @@ import {
 } from "@ui/dropdown-menu";
 import { Icons } from "@ui/icons";
 import { Row } from "@tanstack/react-table";
-import { Invitation, Role } from "@prisma/client";
 
 import { toast } from "sonner";
 
-import { deleteRoleAction } from "@actions/roles.action";
 import { InvitationColumns } from "@type/index";
 import InvitationDelete from "../dialog/InvitationDelete";
 import { deleteInvitationAction } from "@actions/invitations.action";
+import React from "react";
 
 export default function InvitationAction({ row }: { row: Row<InvitationColumns> }) {
   const [openModel, setOpenModel] = useState(false);
@@ -35,7 +34,7 @@ export default function InvitationAction({ row }: { row: Row<InvitationColumns> 
   const [isPending, startTransition] = useTransition();
 
   const handleEdit = async () => {
-    push(`invitations/${row.original.id}`);
+    push(`/admin/users/invitations/${row.original.id}`);
   };
 
   const handleDropdownMenu = () => {
@@ -60,7 +59,8 @@ export default function InvitationAction({ row }: { row: Row<InvitationColumns> 
   };
 
   return (
-    <>
+    <Fragment>
+      {" "}
       <DropdownMenu open={openDropdown} onOpenChange={() => handleDropdownMenu()}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
@@ -90,29 +90,13 @@ export default function InvitationAction({ row }: { row: Row<InvitationColumns> 
           </>
         </DropdownMenuContent>
       </DropdownMenu>
-
       {/* Delete model */}
-
       <InvitationDelete
         isOpen={openModel}
         setIsOpen={setOpenModel}
         pending={isPending}
         handleDelete={handleDelete}
       />
-      {/* <DeleteModel
-        isPending={isPending}
-        handleDelete={handleDelete}
-        openModel={openModel}
-        setOpenModel={setOpenModel}
-      /> */}
-
-      {/* Share model */}
-      {/* <ShareModel
-        isPending={isPending}
-        openModel={openShareModel}
-        setOpenModel={setOpenShareModel}
-        projectId={id}
-      /> */}
-    </>
+    </Fragment>
   );
 }

@@ -36,6 +36,7 @@ import { DataTableViewOptions } from "@ui/table/DataTableViewOptions";
 import { FilterableColumn } from "@type/index";
 import { FadeIn } from "@/components/FadeIn";
 import DynamicBreadcrumb from "@ui/dynamic-breadcrumb";
+import { Gradient } from "@ui/gradient";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -82,28 +83,31 @@ export default function InvitationList<TData, TValue>({
   return (
     <FadeIn className=" space-y-6">
       <DynamicBreadcrumb />
-      <div className="flex items-center bg-muted/70 p-8 py-10 rounded-2xl">
-        <DataTableToolbar
-          filterableColumns={filterableColumns}
-          placeholderText="Filter emails..."
-          table={table}
-          filter="email"
-        />
-        <div className="ml-auto flex items-center gap-2">
-          <DataTableViewOptions table={table} />
 
-          <Button
-            size="sm"
-            className="h-8 gap-1"
-            onClick={() => router.push("invitations/create")}
-          >
-            <PlusCircleIcon className="h-3.5 w-3.5" />
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              Add Invitation
-            </span>
-          </Button>
+      <Gradient className="relative rounded-2xl">
+        <div className=" isolate flex items-center bg-muted/70 p-8 py-10 inset-2 rounded-2xl">
+          <DataTableToolbar
+            filterableColumns={filterableColumns}
+            placeholderText="Filter emails..."
+            table={table}
+            filter="email"
+          />
+          <div className="ml-auto flex items-center gap-2">
+            <DataTableViewOptions table={table} />
+
+            <Button
+              size="sm"
+              className="h-8 gap-1"
+              onClick={() => router.push("/admin/users/invitations/create")}
+            >
+              <PlusCircleIcon className="h-3.5 w-3.5" />
+              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                Add Invitation
+              </span>
+            </Button>
+          </div>
         </div>
-      </div>
+      </Gradient>
 
       <Card className=" rounded-2xl">
         <CardHeader>

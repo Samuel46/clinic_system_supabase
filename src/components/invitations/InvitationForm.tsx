@@ -24,6 +24,7 @@ import {
 } from "@actions/invitations.action";
 import RHFSingleSelect from "@ui/hook-form/RHFSingleSelect";
 import ScheduleProgress from "../schedules/scheduleProgress";
+import { ChevronRight } from "lucide-react";
 
 type Props = {
   edit?: boolean;
@@ -47,8 +48,7 @@ export default function InvitationForm({
   roles,
 }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  console.log(currentInvitation, "currentInitation");
+  const [isPending, startTransition] = useTransition();
 
   const router = useRouter();
 
@@ -76,7 +76,14 @@ export default function InvitationForm({
     label: item.name,
   }));
 
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit, reset, watch } = methods;
+
+  const userInput = watch();
+
+  const hasChanges =
+    userInput.email !== currentInvitation?.email ||
+    userInput.tenantId !== currentInvitation?.tenantId ||
+    userInput.roleId !== currentInvitation?.roleId;
 
   useEffect(() => {
     reset(defaultValues);
@@ -89,11 +96,6 @@ export default function InvitationForm({
 
       // Determine if we are in edit mode and if there are any changes
       if (edit && currentInvitation) {
-        const hasChanges =
-          data.email !== currentInvitation.email ||
-          data.tenantId !== currentInvitation.tenantId ||
-          data.roleId !== currentInvitation.roleId;
-
         if (hasChanges) {
           result = await updateInvitationAction(currentInvitation.id, data);
         } else {
@@ -108,7 +110,10 @@ export default function InvitationForm({
       if (result.success) {
         // Show success notification
         toast.success(result.msg);
-        router.push(`/admin/invitations/workdays?id=${result.data?.scheduleId}`);
+        if (!currentInvitation) {
+          router.push(`/admin/users/invitations/workdays?id=${result.data?.scheduleId}`);
+        }
+
         // Reset the form
         reset();
       } else {
@@ -125,7 +130,7 @@ export default function InvitationForm({
   };
 
   return (
-    <FadeIn className=" space-y-6 pt-10">
+    <FadeIn className=" space-y-6  grid">
       <DynamicBreadcrumb />
       <ScheduleProgress
         currentInvitation={Boolean(currentInvitation)}
@@ -156,15 +161,35 @@ export default function InvitationForm({
           </div>
 
           <Button
+            variant={currentInvitation && !hasChanges ? "secondary" : "default"}
             disabled={isLoading}
             type="submit"
-            className=" p-6  font-display place-self-start  font-bold"
+            className=" place-self-start"
           >
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             {edit ? "Update invitation" : "Create invitation"}
           </Button>
         </div>
       </FormProvider>
+
+      {currentInvitation && (
+        <Button
+          type="submit"
+          disabled={hasChanges}
+          onClick={() =>
+            startTransition(() =>
+              router.push(
+                `/admin/users/invitations/workdays?id=${currentInvitation?.scheduleId}`
+              )
+            )
+          }
+          className="place-self-end"
+        >
+          {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+          Continue
+          <ChevronRight className=" size-5" />
+        </Button>
+      )}
     </FadeIn>
   );
 }

@@ -22,7 +22,7 @@ export default function TreatmentNavigation() {
   const pathname = usePathname();
 
   return (
-    <Navbar className="border rounded-lg px-6">
+    <Navbar className="border rounded-lg px-6 ">
       <NavbarLabel className="flex items-center gap-x-1 text-gray-900">
         <HeartPulse className="size-4" />
         Patient&apos;s care
