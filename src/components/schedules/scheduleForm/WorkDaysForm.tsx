@@ -5,7 +5,7 @@ import { DayOfWeek, Prisma } from "@prisma/client";
 import { CreateScheduleInput, createScheduleSchema } from "@schemas/schedule.schemas";
 import { SessionUser } from "@type/index";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -37,6 +37,7 @@ interface Props {
 export default function WorkDaysForm({ edit, currentSchedule, user }: Props) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isPending, startTransition] = useTransition();
 
   const defaultWorkDays = useMemo(
     () => [
@@ -119,7 +120,7 @@ export default function WorkDaysForm({ edit, currentSchedule, user }: Props) {
     }
   };
   return (
-    <FadeIn className=" space-y-6 pt-10">
+    <FadeIn className=" space-y-6">
       <DynamicBreadcrumb />
 
       <ScheduleProgress
@@ -141,7 +142,7 @@ export default function WorkDaysForm({ edit, currentSchedule, user }: Props) {
             disabled={isLoading}
             type="submit"
             variant={edit ? "secondary" : "default"}
-            className=" py-6    items-center place-self-end"
+            className="place-self-end"
           >
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             {edit ? "Update workdays" : "Create workdays"}
@@ -152,12 +153,13 @@ export default function WorkDaysForm({ edit, currentSchedule, user }: Props) {
         <div className="flex  flex-col space-y-6  items-end">
           <Divider />
           <Button
-            className=" font-semibold p-6"
             type="submit"
-            onClick={() => router.push(`daysoff?id=${currentSchedule?.id}`)}
+            onClick={() =>
+              startTransition(() => router.push(`daysoff?id=${currentSchedule?.id}`))
+            }
           >
             Next
-            <ChevronRight className=" size-5" />
+            <ChevronRight className=" size-4" />
           </Button>
         </div>
       )}

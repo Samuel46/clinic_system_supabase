@@ -101,7 +101,7 @@ export default function OffDaysForm({ edit, currentSchedule, invitation }: Props
             toast.success(result.msg);
             // Refresh or redirect logic here
             router.refresh(); // or use router.push to navigate
-            router.push(`/admin/invitations`);
+            router.push(`/admin/users/invitations`);
           } else {
             toast.error(result.msg);
           }
@@ -143,7 +143,7 @@ export default function OffDaysForm({ edit, currentSchedule, invitation }: Props
   };
 
   return (
-    <FadeIn className=" space-y-6 pt-10">
+    <FadeIn className=" space-y-6">
       <DynamicBreadcrumb />
 
       <ScheduleProgress
@@ -165,7 +165,7 @@ export default function OffDaysForm({ edit, currentSchedule, invitation }: Props
             disabled={isLoading}
             type="submit"
             variant={edit ? "secondary" : "default"}
-            className=" py-6    items-center place-self-end"
+            className="place-self-end"
           >
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             {edit ? "Update days off" : "Create days off"}
@@ -176,14 +176,10 @@ export default function OffDaysForm({ edit, currentSchedule, invitation }: Props
       {edit && (
         <div className="flex  flex-col space-y-6  items-end">
           <Divider />
-          <Button
-            className="  p-6"
-            type="submit"
-            onClick={() => handleCompleteInvitation()}
-          >
+          <Button type="submit" onClick={() => handleCompleteInvitation()}>
             {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             Finish
-            <ChevronRight className=" size-5" />
+            <ChevronRight className=" size-4" />
           </Button>
         </div>
       )}

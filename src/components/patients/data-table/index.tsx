@@ -43,6 +43,7 @@ import { supabase } from "@lib/supabase/client";
 import { toast } from "sonner";
 import { Patient } from "@prisma/client";
 import { fDate } from "@utils/formatTime";
+import { Gradient } from "@ui/gradient";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -121,27 +122,29 @@ export default function PatientList<TData, TValue>({
   return (
     <FadeIn className=" space-y-6">
       <DynamicBreadcrumb />
-      <div className="flex items-center bg-muted/70 p-8 py-10 rounded-2xl">
-        <DataTableToolbar
-          filterableColumns={filterableColumns}
-          placeholderText="Filter name..."
-          table={table}
-        />
-        <div className="ml-auto flex items-center gap-2">
-          <DataTableViewOptions table={table} />
+      <Gradient className="relative rounded-2xl">
+        <div className=" isolate flex items-center bg-muted/70 p-8 py-10 inset-2 rounded-2xl">
+          <DataTableToolbar
+            filterableColumns={filterableColumns}
+            placeholderText="Filter name..."
+            table={table}
+          />
+          <div className="ml-auto flex items-center gap-2">
+            <DataTableViewOptions table={table} />
 
-          <Button
-            size="sm"
-            className="h-8 gap-1"
-            onClick={() => router.push("patients/create")}
-          >
-            <PlusCircleIcon className="h-3.5 w-3.5" />
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              Add patient
-            </span>
-          </Button>
+            <Button
+              size="sm"
+              className="h-8 gap-1"
+              onClick={() => router.push("patients/create")}
+            >
+              <PlusCircleIcon className="h-3.5 w-3.5" />
+              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                Add patient
+              </span>
+            </Button>
+          </div>
         </div>
-      </div>
+      </Gradient>
 
       <Card className=" rounded-2xl">
         <CardHeader>

@@ -20,7 +20,7 @@ import { CreatePatientInput, createPatientSchema } from "@schemas/patients.schem
 import { createPatientAction, updatePatientAction } from "@actions/patients.action";
 import { useRouter } from "next/navigation";
 import { SessionUser } from "@type/index";
-import { Label } from "@ui/label";
+
 import RHFTextArea from "@ui/hook-form/RHFTextArea";
 import { hasDataChanged } from "@utils/index";
 
@@ -91,7 +91,6 @@ export default function PatientForm({ edit, currentPatient, user }: Props) {
 
       if (result.success) {
         toast.success(result.msg);
-
         router.refresh();
         router.back();
         reset();
@@ -134,11 +133,7 @@ export default function PatientForm({ edit, currentPatient, user }: Props) {
 
           <RHFTextArea name="medicalHistory" label="Medical History" />
 
-          <Button
-            disabled={isLoading}
-            type="submit"
-            className=" py-6  place-self-start font-bold  items-center"
-          >
+          <Button disabled={isLoading} type="submit" className="  place-self-start ">
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             {edit ? "Update patient" : "Create patient"}
           </Button>
